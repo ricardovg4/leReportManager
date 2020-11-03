@@ -1,11 +1,7 @@
 const express = require('express');
-const webpack = require('webpack');
 const path = require('path');
-const webpackDevMiddleware = require('webpack-dev-middleware');
 
 const app = express();
-const config = require('./webpack.dev.js');
-const compiler = webpack(config);
 
 // dotenv if on development
 if (process.env.NODE_ENV !== 'production') {
@@ -23,16 +19,8 @@ app.set('view-engine', 'ejs');
 
 app.use('/bulma', express.static(__dirname + '/node_modules/bulma/css/'));
 
-// Tell express to use the webpack-dev-middleware and use the webpack.dev.js
-// configuration file as a base.
-// app.use(
-//     webpackDevMiddleware(compiler, {
-//         publicPath: config.output.publicPath
-//     })
-// );
-
 // routes
-app.get('/a', (req, res) => {
+app.get('/', (req, res) => {
     // res.send('./public/index.html');
     res.render('login.ejs');
 });
