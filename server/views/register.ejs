@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LE Report Manager Register</title>
+    <!-- <link rel="stylesheet" href="bulma/bulma.css"> -->
+    <link rel="stylesheet" href="public/css/mystyles.css">
+</head>
+<body class="has-background-light">
+    <div class="hero columns is-mobile is-centered is-vcentered is-fullheight pb-6">
+        <div class="column is-narrow has-background-white px-6 py-6 box is-two-third-tablet is-one-quarter-fullhd">
+            <div class="container py-4">
+                <figure class="is-161x48 has-text-centered">
+                    <img class=""  src="./public/assets/images/LOGO-1_1_.png" alt="">
+                </figure>
+            </div>
+
+            <h1 class="title has-text-centered">
+                LE Report Manager
+            </h1>
+
+        <% if (messages.error) { %>
+            <%- include ('partials/error') -%> 
+        <% } %>
+
+            <form action="/register" method="POST">
+                <div class="field">
+                    <label for="email">Email</label>
+                    <div class="control">
+                        <input class="input" type="email" id="email" name="email" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <div class="control">
+                        <input class="input" type="password" id="password" name="password" required>
+                    </div>
+                </div>
+                <div class="field pb-2">
+                    <label for="password-check">Type your password again</label>
+                    <div class="control">
+                        <input class="input" type="password" id="password-check" name="password-check" required>
+                    </div>
+                </div>
+                <div class="buttons is-centered">
+                    <button class="button is-primary" type="submit">Register</button>
+                </div>
+            </form>
+            </div>
+    </div>
+    <script>
+        const password = document.getElementById('password');
+        const checkPassword = document.getElementById('password-check');
+
+        checkPassword.addEventListener('input', (e)=>{
+            if (password.value !== checkPassword.value){
+                checkPassword.setCustomValidity('The passwords dont\' match!');
+            } else {
+                checkPassword.setCustomValidity('');
+            }
+        });
+    </script>
+</body>
+</html>
