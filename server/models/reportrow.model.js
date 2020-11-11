@@ -1,19 +1,18 @@
 const mongoose = require('mongoose');
 
+// child
 const systemReferenceNumber = new mongoose.Schema({
-    orderidAmazon: {
-        type: String
+    origin: {
+        type: String,
+        required: true
     },
-    orderidMagento: {
-        type: String
-    },
-    asin: {
-        type: String
-    },
-    sku: {
-        type: String
+
+    number: {
+        type: String,
+        required: true
     }
 });
+
 const reportrowSchema = new mongoose.Schema(
     {
         date: {
@@ -21,7 +20,8 @@ const reportrowSchema = new mongoose.Schema(
             default: Date.now(),
             required: true
         },
-        systemReferenceNumber: systemReferenceNumber,
+        // array syntax needed for when the child may be called more than 1 time
+        systemReferenceNumber: [systemReferenceNumber],
         issue: {
             type: String,
             required: true

@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Reportrow = require('../../models/reportrow.model');
 
+// find all, get
+// router.get("/", userControllr.findAll);
+
+// create one, post
 router.post('/', async (req, res) => {
     const { issue, customerName, customerPhone, customerEmail, source, responseMethod, response, comments, requestToCt, caseStatus, follower, solution } = req.body;
     if (!issue || !source || !caseStatus) {
@@ -15,12 +19,21 @@ router.post('/', async (req, res) => {
                 console.log('row registered');
                 res.status(200).json({ msg: 'row entered successfully.' });
             })
-            .catch((e) => console.log(e));
+            .catch((e) => {
+                res.status(400).json({ msg: e });
+            });
     } catch (e) {
         res.status(400).json({ msg: e });
     }
 });
 
-router.get('/', (req, res) => {});
+// find one, get
+// router.get("/:id", userControllr.findOne);
+
+// update one, put
+// router.put("/:id", userControllr.UpdateUser);
+
+// delete one, delete
+// router.delete("/:id", userControllr.delete);
 
 module.exports = router;

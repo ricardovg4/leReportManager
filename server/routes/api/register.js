@@ -1,13 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const checkAuth = require('./helpers/checkAuth');
 const bcrypt = require('bcrypt');
-const User = require('../models/users.model');
-
-// should include password  matching and a master password for the dev
-router.get('/', (req, res) => {
-    res.render('register.ejs');
-});
+const User = require('../../models/users.model');
 
 router.post('/', async (req, res) => {
     try {
