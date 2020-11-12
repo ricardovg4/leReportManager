@@ -7,6 +7,13 @@ router.post('/', async (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
+
+        // check if email || password emtpy
+        if (!email || !password) {
+            res.status(400).json({ error: 'please enter the required fields.' });
+        }
+
+        // hash password and register user
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({ email, password: hashedPassword, date: Date.now() });
         User.findOne({ email: email }).then((user) => {
@@ -14,16 +21,15 @@ router.post('/', async (req, res) => {
                 newUser
                     .save()
                     .then((user) => {
-                        console.log('user registered');
+                        res.status(200).json({ user: user._id });
                     })
                     .catch((err) => {
-                        console.log(err);
+                        res.status(400).json({ err });
                     });
             } else {
-                console.log('already registered');
+                res.status(400).json({ error: 'user already registered.' });
             }
         });
-        res.redirect('/login');
     } catch (e) {
         res.status(400).json({ error: e.message });
     }

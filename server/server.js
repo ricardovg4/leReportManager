@@ -12,7 +12,7 @@ mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true, use
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error'));
 
-// start the server by listening
+// start the server by listening on PORT
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, function () {
     console.log(`App listening on port ${process.env.PORT}!\n`);
