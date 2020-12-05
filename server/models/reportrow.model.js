@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 // child
 const systemReferenceNumber = new mongoose.Schema({
     origin: {
-        type: String,
-        required: true
+        type: String
     },
 
     number: {
@@ -17,7 +16,7 @@ const reportrowSchema = new mongoose.Schema(
     {
         date: {
             type: Date,
-            default: Date.now(),
+            default: Date.now,
             required: true
         },
         // array syntax needed for when the child may be called more than 1 time

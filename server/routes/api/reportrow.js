@@ -3,11 +3,35 @@ const router = express.Router();
 const Reportrow = require('../../models/reportrow.model');
 
 // find all, get
-// router.get("/", userControllr.findAll);
+router.get('/', (req, res) => {
+    Reportrow.find({})
+        // exclude fields form response
+        .select('-createdAt -updatedAt -__v')
+        .then((row) => {
+            console.log('rows requested');
+            return res.status(200).json(row);
+        })
+        .catch((e) => {
+            res.status(400).json({ msg: e });
+        });
+});
 
 // create one, post
 router.post('/', async (req, res) => {
-    const { issue, customerName, customerPhone, customerEmail, source, responseMethod, response, comments, requestToCt, caseStatus, follower, solution } = req.body;
+    const {
+        issue,
+        customerName,
+        customerPhone,
+        customerEmail,
+        source,
+        responseMethod,
+        response,
+        comments,
+        requestToCt,
+        caseStatus,
+        follower,
+        solution
+    } = req.body;
     if (!issue || !source || !caseStatus) {
         return res.status(400).json({ msg: 'Please enter all required fields.' });
     }

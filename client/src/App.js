@@ -1,21 +1,76 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
+import { Route, Switch, BrowserRouter as Router, Redirect } from 'react-router-dom';
+
+// scss
 import './App.scss';
-import Button from 'react-bulma-components/lib/components/button';
+
+// routes
+import LoginPage from './pages/Login/LoginPage';
+import NotFound from './pages/NotFound/NotFound';
+import Dashboard from './pages/Dashboard/Dashboard';
+import Loading from './pages/Loading/Loading';
+
+// Context
+import { useContext } from 'react';
+import { UserContext } from './context/UserContext';
+
+// Utils
+import userIfLoggedIn from './apiCalls/ping/userIfLoggedIn';
 
 function App() {
+    const [user, setUser] = useContext(UserContext);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        document.body.classList.add('has-background-light');
+
+        const userResponse = async () => {
+            setLoading(true);
+            const res = await userIfLoggedIn();
+            setUser(res ? res.email : res);
+            setLoading(false);
+            return res;
+        };
+        userResponse();
+    }, []);
+
     return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-                    Learn React
-                </a>
-                <Button color="primary">Press Me!</Button>
-            </header>
-        </div>
+        <Router>
+            <div className="App">
+                <Switch>
+                    <Route
+                        exact
+                        path="/login"
+                        // component={LoginPage}
+                        render={() =>
+                            loading ? (
+                                <Loading />
+                            ) : user ? (
+                                <Redirect to="/dashboard" />
+                            ) : (
+                                <LoginPage />
+                            )
+                        }
+                    />
+                    <Route
+                        exact
+                        path="/dashboard"
+                        render={() =>
+                            loading ? <Loading /> : user ? <Dashboard /> : <LoginPage />
+                        }
+                    />
+                    <Route
+                        exact
+                        path="/"
+                        render={() =>
+                            loading ? <Loading /> : user ? <Dashboard /> : <LoginPage />
+                        }
+                    />
+                    <Route path="/loading" component={Loading} />
+                    <NotFound />
+                </Switch>
+            </div>
+        </Router>
     );
 }
 

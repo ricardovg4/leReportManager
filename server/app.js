@@ -6,12 +6,13 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const auth = require('./middleware/auth');
 const cookieParser = require('cookie-parser');
 
+// middleware
 // instead of body-parser
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// app.use(cors());
 app.use(cookieParser());
 app.use(
     cors({
@@ -22,6 +23,10 @@ app.use(
 );
 
 // API routes
+// ping to check if logged-in
+const ping = require('./routes/api/ping');
+app.use('/api/ping', auth, ping);
+
 // register
 const register = require('./routes/api/register');
 app.use('/register', register);
@@ -32,7 +37,7 @@ app.use('/login', login);
 
 // report row
 const reportrow = require('./routes/api/reportrow');
-app.use('/api/reportrow', reportrow);
+app.use('/api/reportrow', auth, reportrow);
 
 // export
 module.exports = app;
