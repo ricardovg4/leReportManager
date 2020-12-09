@@ -44,9 +44,6 @@ const reportrowSchema = new mongoose.Schema(
         response: {
             type: String
         },
-        comments: {
-            type: String
-        },
         requestToCt: {
             type: String
         },

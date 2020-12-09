@@ -33,7 +33,17 @@ router.post('/', async (req, res) => {
         solution
     } = req.body;
     if (!issue || !source || !caseStatus) {
-        return res.status(400).json({ msg: 'Please enter all required fields.' });
+        const missing = !issue
+            ? 'issue'
+            : !source
+            ? 'source'
+            : !caseStatus
+            ? 'casestatus'
+            : 'dunno';
+        console.log(req.body);
+        return res
+            .status(400)
+            .json({ msg: `Please enter all required fields.${missing}` });
     }
     try {
         const newReportrow = new Reportrow({ ...req.body });
@@ -59,5 +69,15 @@ router.post('/', async (req, res) => {
 
 // delete one, delete
 // router.delete("/:id", userControllr.delete);
+
+// WARNING
+// router.delete('/deleteall', (req, res) => {
+//     Reportrow.deleteMany({})
+//         .then(() => {
+//             console.log('all deleted');
+//             res.status(200).json({ msg: 'all deleted' });
+//         })
+//         .catch((e) => console.log(e));
+// });
 
 module.exports = router;

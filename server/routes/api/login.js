@@ -9,8 +9,8 @@ const bcrypt = require('bcrypt');
 const User = require('../../models/users.model');
 const jwt = require('jsonwebtoken');
 
-// max age, duration, of the cookie/jwt
-const maxAge = 60;
+// max age, duration, of the cookie/jwt in seconds
+const maxAge = 60 * 60 * 24;
 // create jwt
 const createJwtToken = (id) => {
     const token = jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -20,7 +20,7 @@ const createJwtToken = (id) => {
 };
 
 router.post('/', async (req, res) => {
-    const { email, password } = req.body;
+    const { username, email, password } = req.body;
     if (!email || !password) {
         res.status(400).json({ error: 'Enter all required fields.' });
     }
@@ -32,8 +32,14 @@ router.post('/', async (req, res) => {
             if (auth) {
                 const token = createJwtToken(user._id);
                 console.log(`${user.email} logged in`);
-                res.cookie(jwtCookieName, token, { httpOnly: true, sameSite: 'strict', maxAge: maxAge * 1000 });
-                return res.status(200).json({ email: user.email });
+                res.cookie(jwtCookieName, token, {
+                    httpOnly: true,
+                    sameSite: 'strict',
+                    maxAge: maxAge * 1000
+                });
+                return res
+                    .status(200)
+                    .json({ email: user.email, username: user.username });
             } else {
                 if (req.cookies[jwtCookieName]) {
                     // delete jwt cookie if present when not auth

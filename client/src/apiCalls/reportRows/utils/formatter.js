@@ -8,7 +8,6 @@ const header = {
     source: 'Source',
     responseMethod: 'Response Method',
     response: 'Response',
-    comments: 'Comments',
     requestToCt: 'Request to CT',
     caseStatus: 'Case Status',
     follower: 'Follower',
@@ -42,9 +41,7 @@ const formatter = (rowsData) => {
                                     date == 'Invalid Date' ? (
                                         row[key]
                                     ) : (
-                                        <span
-                                            style={{ fontSize: '14px', color: '#7a7a7a' }}
-                                        >
+                                        <span style={{ color: '#7a7a7a' }}>
                                             {formatedDate}
                                         </span>
                                     );
@@ -53,9 +50,28 @@ const formatter = (rowsData) => {
                                 cell = String(row[key]);
                                 break;
                         }
-                        return <td key={keyTdProp}>{cell}</td>;
+                        cell = <span style={{ fontSize: '14px' }}>{cell}</span>;
+                        return (
+                            <td
+                                style={{
+                                    width: 'calc(100% / 13)',
+                                    wordBreak: 'break-word'
+                                }}
+                                key={keyTdProp}
+                            >
+                                {cell}
+                            </td>
+                        );
                     } else {
-                        return <td key={keyTdProp}></td>;
+                        return (
+                            <td
+                                style={{
+                                    width: 'calc(100% / 13)',
+                                    wordBreak: 'break-word'
+                                }}
+                                key={keyTdProp}
+                            ></td>
+                        );
                     }
                 })}
             </tr>
@@ -66,8 +82,8 @@ const formatter = (rowsData) => {
 
 let lastPage = false;
 
-const rows = (rowsData, numberOfRows, currentPage) => {
-    const allRows = formatter(rowsData);
+const rows = (rowsData, numberOfRows, currentPage, filters) => {
+    let allRows = formatter(rowsData);
     const start = numberOfRows * (currentPage - 1);
     const last = numberOfRows * currentPage;
     lastPage = allRows.length >= start && allRows.length <= last ? true : false;

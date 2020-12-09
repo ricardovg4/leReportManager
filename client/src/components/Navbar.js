@@ -1,11 +1,15 @@
 import logo from '../assets/images/logo2.png';
 import avatar from '../assets/images/avatar.jpg';
+import logout from '../apiCalls/logout/logout';
 
-import { useContext } from 'react';
+// Context
+import { useContext, useState } from 'react';
 import { UserContext } from '../context/UserContext';
+import { Redirect } from 'react-router-dom';
 
 const Navbar = (props) => {
     const [user, setUser] = useContext(UserContext);
+    const [redirectLogout, setRedirectLogout] = useState(false);
 
     const hamburgerAnimation = (e) => {
         const burguer = document.querySelector('.navbar-burger');
@@ -13,6 +17,15 @@ const Navbar = (props) => {
         burguer.classList.toggle('is-active');
         burguerElements.classList.toggle('is-active');
     };
+    const logoutHandler = () => {
+        logout();
+        setUser(null);
+        setRedirectLogout(true);
+    };
+
+    if (redirectLogout) {
+        return <Redirect to="/" />;
+    }
     return (
         <nav className="navbar" role="navigation" aria-label="main navigation">
             <div className="navbar-brand">
@@ -39,32 +52,6 @@ const Navbar = (props) => {
                     <a className="navbar-item" href="/">
                         Home
                     </a>
-
-                    {/* <a className="navbar-item">
-        Documentation
-      </a>
-
-      <div className="navbar-item has-dropdown is-hoverable">
-        <a className="navbar-link">
-          More
-        </a>
-
-        <div className="navbar-dropdown">
-          <a className="navbar-item">
-            About
-          </a>
-          <a className="navbar-item">
-            Jobs
-          </a>
-          <a className="navbar-item">
-            Contact
-          </a>
-          <hr className="navbar-divider">
-          <a className="navbar-item">
-            Report an issue
-          </a>
-        </div> */}
-                    {/* </div> */}
                 </div>
 
                 <div className="navbar-end">
@@ -85,7 +72,7 @@ const Navbar = (props) => {
                     </div>
                     <div className="navbar-item">
                         <div className="buttons">
-                            <a className="button is-danger" href="/logout">
+                            <a className="button is-danger" onClick={logoutHandler}>
                                 Log out
                             </a>
                         </div>

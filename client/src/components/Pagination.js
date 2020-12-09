@@ -4,14 +4,16 @@ import { useContext, useState } from 'react';
 import { PaginationContext } from '../context/PaginationContext';
 
 const Pagination = (props) => {
-    const [paginationList, setPaginationList] = useState([0, 1, 2]);
+    // const [paginationList, setPaginationList] = useState([0, 1, 2]);
 
     // Context
     const [
         currentPage,
         setCurrentPage,
         lastPageAvailable,
-        setLastPageAvailable
+        setLastPageAvailable,
+        paginationList,
+        setPaginationList
     ] = useContext(PaginationContext);
 
     const changePagination = (direction) => {

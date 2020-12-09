@@ -31,9 +31,13 @@ app.use('/api/ping', auth, ping);
 const register = require('./routes/api/register');
 app.use('/register', register);
 
-//login
+// login
 const login = require('./routes/api/login');
 app.use('/login', login);
+
+// logout
+const logout = require('./routes/api/logout');
+app.use('/logout', logout);
 
 // report row
 const reportrow = require('./routes/api/reportrow');

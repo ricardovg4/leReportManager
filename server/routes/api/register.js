@@ -5,17 +5,23 @@ const User = require('../../models/users.model');
 
 router.post('/', async (req, res) => {
     try {
+        const username = req.body.username;
         const email = req.body.email;
         const password = req.body.password;
 
         // check if email || password emtpy
-        if (!email || !password) {
+        if (!username || !email || !password) {
             res.status(400).json({ error: 'please enter the required fields.' });
         }
 
         // hash password and register user
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ email, password: hashedPassword, date: Date.now() });
+        const newUser = new User({
+            username,
+            email,
+            password: hashedPassword,
+            date: Date.now()
+        });
         User.findOne({ email: email }).then((user) => {
             if (!user) {
                 newUser

@@ -27,8 +27,9 @@ function App() {
         const userResponse = async () => {
             setLoading(true);
             const res = await userIfLoggedIn();
-            setUser(res ? res.email : res);
+            setUser(res ? res.username : res);
             setLoading(false);
+            // console.log(user, loading);
             return res;
         };
         userResponse();

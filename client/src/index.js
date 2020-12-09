@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { UserProvider } from './context/UserContext';
 import App from './App';
+import './fontAwesome';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(

@@ -3,8 +3,9 @@ import Pagination from '../components/Pagination';
 
 const DailyReport = (props) => {
     return (
-        <section className="section pt-4">
-            <div className="card container">
+        <section className="section py-4">
+            {/* Container class to make it centered and narrow */}
+            <div className="card">
                 <header className="card-header">
                     <p className="card-header-title">{props.user}'s report</p>
                 </header>

@@ -22,7 +22,7 @@ function LoginForm(props) {
         if (userRes) {
             setAuth(true);
             // Set context
-            setUser(userRes.email);
+            setUser(userRes.username);
         } else {
             setAuth(false);
         }

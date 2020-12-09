@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
         User.findById(id)
             .then((user) => {
                 if (user) {
-                    return res.status(200).json({ email: user.email });
+                    return res.status(200).json({ username: user.username });
                 }
             })
             .catch((e) => console.log(e));

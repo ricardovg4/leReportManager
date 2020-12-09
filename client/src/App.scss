@@ -6,3 +6,6 @@ $family-sans-serif: 'Nunito', serif;
 
 // single imports or full import
 @import '../node_modules/bulma/bulma';
+
+// import bulma calendar
+@import '../node_modules/bulma-calendar/src/sass/index.sass';
