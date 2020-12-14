@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 const AddOneRow = () => {
     return (
         <div>

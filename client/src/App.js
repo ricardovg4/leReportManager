@@ -29,7 +29,6 @@ function App() {
             const res = await userIfLoggedIn();
             setUser(res ? res.username : res);
             setLoading(false);
-            // console.log(user, loading);
             return res;
         };
         userResponse();

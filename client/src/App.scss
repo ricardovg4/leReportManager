@@ -2,7 +2,18 @@
 
 // custom
 @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
-$family-sans-serif: 'Nunito', serif;
+$family-sans-serif: 'nunito', serif;
+
+$menu-item-hover-background-color: hsl(217, 71%, 53%);
+// $menu-item-hover-background-color: hsl(0, 0%, 21%);
+
+.menu-label {
+    padding-left: 1em;
+}
+
+.menu-list li a {
+    padding-left: 1.25em;
+}
 
 // single imports or full import
 @import '../node_modules/bulma/bulma';

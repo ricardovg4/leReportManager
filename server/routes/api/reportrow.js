@@ -63,12 +63,44 @@ router.post('/', async (req, res) => {
 
 // find one, get
 // router.get("/:id", userControllr.findOne);
+router.get('/:id', (req, res) => {
+    const id = req.params.id;
+    Reportrow.findById(id)
+        .then((doc) => {
+            res.status(200).json({ msg: doc });
+        })
+        .catch((e) => {
+            res.status(400).json({ msg: "couldn't find document" });
+        });
+});
 
 // update one, put
-// router.put("/:id", userControllr.UpdateUser);
+router.put('/:id', (req, res) => {
+    const id = req.params.id;
+    const updatedRow = req.body;
+    if (updatedRow.date) {
+        delete updatedRow.date;
+    }
+    Reportrow.findByIdAndUpdate(id, updatedRow)
+        .then(() => {
+            res.status(200).json({ msg: `${id} updated` });
+        })
+        .catch((e) => {
+            res.status(400).json({ msg: "couldn't update}" });
+        });
+});
 
 // delete one, delete
-// router.delete("/:id", userControllr.delete);
+router.delete('/:id', (req, res) => {
+    const id = req.params.id;
+    Reportrow.findByIdAndDelete(id)
+        .then(() => {
+            res.status(200).json({ msg: `${id} deleted.` });
+        })
+        .catch((e) => {
+            res.status(400).json({ msg: `couldn't delete` });
+        });
+});
 
 // WARNING
 // router.delete('/deleteall', (req, res) => {

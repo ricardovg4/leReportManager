@@ -3,22 +3,28 @@ import DailyReport from '../../components/DailyReport';
 import Menu from '../../components/Menu';
 
 // Context
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { UserContext } from '../../context/UserContext';
 import { RowsDataUpdateProvider } from '../../context/RowsDataUpdateContext';
-
 import { PaginationProvider } from '../../context/PaginationContext';
+
 import CreateReportRow from 'components/CreateReportRow';
+import TrackingCard from 'components/TrackingCard';
 
 const Dashboard = () => {
     const [user, setUser] = useContext(UserContext);
+    const [trackingCardRender, setTrackingCardRender] = useState(0);
+
+    const toggleTrackingRender = (setRender) => {
+        setTrackingCardRender((prev) => !prev);
+    };
 
     return (
         <div>
             <div className="columns is-mobile ">
                 {/* hard coded widths! */}
                 <div className="column is-1 p-0" style={{ width: '170px' }}>
-                    <Menu />
+                    <Menu togglerender={toggleTrackingRender} />
                 </div>
                 {/* hard coded widths! */}
                 <div
@@ -27,6 +33,11 @@ const Dashboard = () => {
                 >
                     <div>
                         <Navbar />
+                        {/* conditional render based on menu's links */}
+                        {trackingCardRender ? (
+                            <TrackingCard togglerender={toggleTrackingRender} />
+                        ) : null}
+                        {/* conditional render based on menu's links */}
                         <RowsDataUpdateProvider>
                             <CreateReportRow />
                             <PaginationProvider>

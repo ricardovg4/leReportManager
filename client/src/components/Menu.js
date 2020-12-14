@@ -1,33 +1,102 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import postReportRows from 'apiCalls/reportRows/postReportRows';
+import getFile from '../apiCalls/files/getFile';
+
 import logo from '../assets/images/logo3.png';
 
-const Menu = () => {
+const Menu = (props) => {
     return (
         <div
             style={{
                 position: 'fixed',
                 top: '0px',
                 left: '0px',
+                bottom: '0px',
                 height: '100%',
                 width: '158px'
             }}
         >
             <aside
                 // className="menu is-fullheight section pt-3 has-background-grey-dark"
-                className="menu pt-3 px-4 has-background-grey-dark"
+                //px-4
+                className="menu pt-3 has-background-grey-dark is-unselectable"
                 style={{ height: '100%' }}
             >
-                <a className="navbar-item" href="/" style={{ paddingBottom: '1em' }}>
+                <a
+                    className="is-flex is-align-items-center is-justify-content-center is-flex-grow-0 is-flex-shrink-0"
+                    href="/"
+                    style={{
+                        paddingBottom: '1.25em',
+                        margin: 'auto',
+                        padding: '0.5rem 1.75rem'
+                    }}
+                >
                     <img src={logo} alt="logo" style={{ margin: 'auto' }} />
                 </a>
+
                 <p className="menu-label">General</p>
                 <ul className="menu-list">
                     <li>
-                        <a className="has-text-white">Dashboard</a>
+                        <a className="has-text-white is-active">Daily Report</a>
                     </li>
                     <li>
-                        <a className="has-text-white is-active">Customers</a>
+                        <a className="has-text-white">Dashboard</a>
                     </li>
                 </ul>
+                <p className="menu-label">Utilities</p>
+                <ul className="menu-list">
+                    <li>
+                        <a className="has-text-white" onClick={props.togglerender}>
+                            Track an order
+                        </a>
+                    </li>
+                </ul>
+                <p className="menu-label">Docs</p>
+                <ul className="menu-list">
+                    <li>
+                        <a
+                            className="has-text-white"
+                            onClick={() => {
+                                getFile('LampUX-Guide-20200518.pdf');
+                            }}
+                        >
+                            Lampux PDF
+                        </a>
+                    </li>
+                    <li>
+                        <a className="has-text-white">SKU status</a>
+                    </li>
+                </ul>
+                <p className="menu-label">Training</p>
+                <ul className="menu-list">
+                    <li>
+                        <a className="has-text-white">Videos</a>
+                    </li>
+                    <li>
+                        <a
+                            className="has-text-white"
+                            onClick={() => {
+                                getFile('le-cs-training.xlsx');
+                            }}
+                        >
+                            Excel sheet
+                        </a>
+                    </li>
+                </ul>
+
+                <button
+                    className="button is-danger"
+                    style={{
+                        position: 'absolute',
+                        bottom: '0%',
+                        left: '0%',
+                        width: '100%'
+                    }}
+                >
+                    <span className="icon">
+                        <FontAwesomeIcon icon={['fas', 'sign-out-alt']} size="1x" />
+                    </span>
+                </button>
             </aside>
         </div>
     );

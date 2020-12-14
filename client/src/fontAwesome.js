@@ -3,25 +3,26 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 
 // import your icons
 import {
-    faCheck,
+    faEdit,
     faEnvelope,
-    faHome,
-    faMoneyBill,
     faPhone,
     faPlusCircle,
+    faSignOutAlt,
+    faTimesCircle,
+    faTrash,
     faUser
 } from '@fortawesome/free-solid-svg-icons';
 import { faCode, faHighlighter } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
-    faMoneyBill,
-    faCode,
-    faHighlighter,
-    faHome,
     faPlusCircle,
-    faCheck,
-    faEnvelope,
     faUser,
-    faPhone
+    faPhone,
+    faSignOutAlt,
+    faUser,
+    faTimesCircle,
+    faTrash,
+    faEdit,
+    faEnvelope
     // more icons go here
 );

@@ -1,3 +1,5 @@
+const { FontAwesomeIcon } = require('@fortawesome/react-fontawesome');
+
 const header = {
     date: 'Date',
     systemReferenceNumber: 'Reference Number',
@@ -14,6 +16,26 @@ const header = {
     solution: 'Solution'
 };
 
+const ButtonIcon = (props) => {
+    return (
+        <button
+            className={`button is-small is-outlined  ${props.classColor}`}
+            style={props.style}
+            onClick={(e) => {
+                // console.log(props.id);
+                editID = props.id;
+                // console.log(editID);
+            }}
+        >
+            <span className="icon">
+                <FontAwesomeIcon icon={['fas', props.icon]} size="1x" />
+            </span>
+        </button>
+    );
+};
+
+let editID = null;
+
 const formatter = (rowsData) => {
     const res = rowsData.map((row) => {
         let keyNumber = 0;
@@ -25,6 +47,8 @@ const formatter = (rowsData) => {
                     let keyTdProp = row._id + keyNumber;
                     if (key in row) {
                         let cell;
+
+                        // check if object to format system reference number
                         switch (typeof row[key]) {
                             case 'object':
                                 cell = Object.entries(row[key]).map(([key, value]) => {
@@ -45,12 +69,29 @@ const formatter = (rowsData) => {
                                             {formatedDate}
                                         </span>
                                     );
+                                // cell = row[key];
                                 break;
                             default:
                                 cell = String(row[key]);
                                 break;
                         }
-                        cell = <span style={{ fontSize: '14px' }}>{cell}</span>;
+
+                        // Check for Case Status to format as tag
+                        switch (row[key]) {
+                            case 'pending':
+                                cell = <span className="tag is-danger">{row[key]}</span>;
+                                break;
+                            case 'solved':
+                                cell = <span className="tag">{row[key]}</span>;
+                                break;
+                            case 'waiting for cs answer':
+                                cell = <span className="tag is-warning">{row[key]}</span>;
+                                break;
+
+                            default:
+                                cell = <span style={{ fontSize: '14px' }}>{cell}</span>;
+                                break;
+                        }
                         return (
                             <td
                                 style={{
@@ -66,7 +107,7 @@ const formatter = (rowsData) => {
                         return (
                             <td
                                 style={{
-                                    width: 'calc(100% / 13)',
+                                    width: 'calc(100% / 14)',
                                     wordBreak: 'break-word'
                                 }}
                                 key={keyTdProp}
@@ -74,6 +115,17 @@ const formatter = (rowsData) => {
                         );
                     }
                 })}
+                <td style={{ width: 'calc(100% / 14)' }}>
+                    <div className="field is-horizontal">
+                        <ButtonIcon
+                            icon="edit"
+                            classColor="is-primary"
+                            style={{ marginRight: '6px' }}
+                            id={row._id}
+                        />
+                        <ButtonIcon icon="trash" classColor="is-danger" />
+                    </div>
+                </td>
             </tr>
         );
     });
@@ -90,4 +142,4 @@ const rows = (rowsData, numberOfRows, currentPage, filters) => {
     return allRows.slice(start, last);
 };
 
-export { header, rows, lastPage };
+export { header, rows, lastPage, editID };

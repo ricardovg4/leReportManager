@@ -7,8 +7,15 @@ const app = require('./app');
 
 // mongoDB connection
 const mongoose = require('mongoose');
-const mongoDB = process.env.dbUrl ? process.env.dbUrl : "there's no mongoDB URL as a ENV variable";
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
+const mongoDB = process.env.dbUrl
+    ? process.env.dbUrl
+    : "there's no mongoDB URL as a ENV variable";
+mongoose.connect(mongoDB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error'));
 

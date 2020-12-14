@@ -43,5 +43,9 @@ app.use('/logout', logout);
 const reportrow = require('./routes/api/reportrow');
 app.use('/api/reportrow', auth, reportrow);
 
+// Files
+const files = require('./routes/files/files');
+app.use('/files', auth, files);
+
 // export
 module.exports = app;

@@ -1,5 +1,6 @@
 import Table from '../components/Table';
 import Pagination from '../components/Pagination';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const DailyReport = (props) => {
     return (
@@ -7,8 +8,14 @@ const DailyReport = (props) => {
             {/* Container class to make it centered and narrow */}
             <div className="card">
                 <header className="card-header">
-                    <p className="card-header-title">{props.user}'s report</p>
+                    <p className="card-header-title">
+                        <span className="icon mr-2 ">
+                            <FontAwesomeIcon icon={['fas', 'user']} size="1x" />
+                        </span>
+                        {props.user}'s report
+                    </p>
                 </header>
+
                 <div className="card-content">
                     <Table />
                 </div>
