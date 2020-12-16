@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const id = decoded.id;
 
-        // retrieve email by ID
+        // retrieve username by ID
         User.findById(id)
             .then((user) => {
                 if (user) {

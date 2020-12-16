@@ -75,8 +75,8 @@ const CreateReportRow = () => {
                         <AddOneButton />
                     ) : (
                         <FormDailyReport
-                            confirmcanceladdone={confirmCancelAddOne}
-                            handlepostaddonerow={handlePostAddOneRow}
+                            confirmcancelone={confirmCancelAddOne}
+                            handleonerow={handlePostAddOneRow}
                         />
                     )}
                 </div>

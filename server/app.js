@@ -25,7 +25,7 @@ app.use(
 // API routes
 // ping to check if logged-in
 const ping = require('./routes/api/ping');
-app.use('/api/ping', auth, ping);
+app.use('/api/ping', ping);
 
 // register
 const register = require('./routes/api/register');

@@ -1,14 +1,35 @@
+// dotenv if on development
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
 const express = require('express');
 const router = express.Router();
-const Reportrow = require('../../models/reportrow.model');
+const jwt = require('jsonwebtoken');
+const User = require('../../models/users.model');
+const createReportrowModel = require('../../models/reportrow.model');
+
+const retrieveUserId = async (token) => {
+    if (token) {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const id = decoded.id;
+
+        // Get user's id
+        const user = await User.findById(id);
+        console.log('user find');
+        if (user) {
+            return user.username;
+        }
+    }
+};
 
 // find all, get
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
+    const username = await retrieveUserId(req.cookies.jwt);
+    const Reportrow = createReportrowModel(username);
     Reportrow.find({})
         // exclude fields form response
         .select('-createdAt -updatedAt -__v')
         .then((row) => {
-            console.log('rows requested');
             return res.status(200).json(row);
         })
         .catch((e) => {
@@ -33,19 +54,13 @@ router.post('/', async (req, res) => {
         solution
     } = req.body;
     if (!issue || !source || !caseStatus) {
-        const missing = !issue
-            ? 'issue'
-            : !source
-            ? 'source'
-            : !caseStatus
-            ? 'casestatus'
-            : 'dunno';
-        console.log(req.body);
         return res
             .status(400)
             .json({ msg: `Please enter all required fields.${missing}` });
     }
     try {
+        const username = await retrieveUserId(req.cookies.jwt);
+        const Reportrow = createReportrowModel(username);
         const newReportrow = new Reportrow({ ...req.body });
         newReportrow
             .save()
@@ -62,12 +77,13 @@ router.post('/', async (req, res) => {
 });
 
 // find one, get
-// router.get("/:id", userControllr.findOne);
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
+    const username = await retrieveUserId(req.cookies.jwt);
+    const Reportrow = createReportrowModel(username);
     const id = req.params.id;
     Reportrow.findById(id)
-        .then((doc) => {
-            res.status(200).json({ msg: doc });
+        .then((row) => {
+            res.status(200).json(row);
         })
         .catch((e) => {
             res.status(400).json({ msg: "couldn't find document" });
@@ -75,7 +91,9 @@ router.get('/:id', (req, res) => {
 });
 
 // update one, put
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
+    const username = await retrieveUserId(req.cookies.jwt);
+    const Reportrow = createReportrowModel(username);
     const id = req.params.id;
     const updatedRow = req.body;
     if (updatedRow.date) {

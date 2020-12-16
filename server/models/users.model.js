@@ -16,6 +16,14 @@ const usersSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        role: {
+            type: String,
+            enum: ['cs representative', 'ct reviewer'],
+            required: true
+        },
+        permissions: {
+            type: String
+        },
         date: {
             type: Date,
             default: Date.now()

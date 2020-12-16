@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FormField from './FormField';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const FormDailyReport = (props) => {
     // Form state
@@ -15,6 +15,51 @@ const FormDailyReport = (props) => {
     const [response, setResponse] = useState('');
     const [requestToCt, setRequestToCt] = useState('');
     const [caseStatus, setCaseStatus] = useState('solved');
+
+    // useEffect
+    useEffect(() => {
+        const rowData = props.rowData;
+        if (rowData) {
+            if (
+                rowData.systemReferenceNumber &&
+                Object.entries(rowData.systemReferenceNumber).length > 0
+            ) {
+                setReferenceNumber(rowData.systemReferenceNumber[0].number);
+                const rowOrigin = rowData.systemReferenceNumber[0].origin;
+                if (rowOrigin === 'any') {
+                    rowData.systemReferenceNumber[0].origin = 'Other';
+                }
+                setSystemReference(rowData.systemReferenceNumber[0].origin);
+            }
+            if (rowData.issue) {
+                setIssue(rowData.issue);
+            }
+            if (rowData.customerName) {
+                setName(rowData.customerName);
+            }
+            if (rowData.customerPhone) {
+                setPhone(rowData.customerPhone);
+            }
+            if (rowData.customerEmail) {
+                setEmail(rowData.customerEmail);
+            }
+            if (rowData.source) {
+                setSource(rowData.source);
+            }
+            if (rowData.responseMethod) {
+                setResponseMethod(rowData.responseMethod);
+            }
+            if (rowData.response) {
+                setResponse(rowData.response);
+            }
+            if (rowData.requestToCt) {
+                setRequestToCt(rowData.requestToCt);
+            }
+            if (rowData.caseStatus) {
+                setCaseStatus(rowData.caseStatus);
+            }
+        }
+    }, []);
 
     // toISOstring without timezone shifting
     const toIsoString = function (dt) {
@@ -50,8 +95,8 @@ const FormDailyReport = (props) => {
             systemReferenceNumber: [{ origin: systemReference, number: referenceNumber }]
         }),
         ...(name && { customerName: name }),
-        ...(phone && { customerName: phone }),
-        ...(email && { customerName: email }),
+        ...(phone && { customerPhone: phone }),
+        ...(email && { customerEmail: email }),
         ...(source && { source }),
         ...(responseMethod && { responseMethod }),
         ...(response && { response }),
@@ -63,7 +108,7 @@ const FormDailyReport = (props) => {
         e.preventDefault();
         if (issue && source && caseStatus) {
             //     // clearState();
-            props.handlepostaddonerow(row);
+            props.handleonerow(row, props.rowData ? props.rowData._id : null);
         }
     };
 
@@ -275,12 +320,9 @@ const FormDailyReport = (props) => {
 
                 <div className="buttons is-right mt-5">
                     <button className="button is-primary mr-4" id="submit-row-button">
-                        Submit
+                        {props.submitButtonName || 'Submit'}
                     </button>
-                    <button
-                        className="button is-danger"
-                        onClick={props.confirmcanceladdone}
-                    >
+                    <button className="button is-danger" onClick={props.confirmcancelone}>
                         Cancel
                     </button>
                 </div>
