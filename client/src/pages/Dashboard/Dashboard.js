@@ -39,7 +39,7 @@ const Dashboard = () => {
                         ) : null}
                         {/* conditional render based on menu's links */}
                         <RowsDataUpdateProvider>
-                            <CreateReportRow />
+                            <CreateReportRow user={user} />
                             <PaginationProvider>
                                 <DailyReport user={user} />
                             </PaginationProvider>

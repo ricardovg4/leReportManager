@@ -6,7 +6,7 @@ import postReportRows from 'apiCalls/reportRows/postReportRows';
 import { RowsDataUpdateContext } from '../context/RowsDataUpdateContext';
 import FormDailyReport from './FormDailyReportRow';
 
-const CreateReportRow = () => {
+const CreateReportRow = (props) => {
     const [addOne, setAddOne] = useState(false);
     const [cancelModal, setCancelModal] = useState('');
 
@@ -16,7 +16,7 @@ const CreateReportRow = () => {
     const handlePostAddOneRow = async (row) => {
         const button = document.getElementById('submit-row-button');
         button.classList.toggle('is-loading');
-        const res = await postReportRows(row);
+        const res = await postReportRows(props.user, row);
         if (res) {
             button.classList.toggle('is-loading');
             setAddOne(false);

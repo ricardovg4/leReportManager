@@ -29,7 +29,7 @@ const header = {
     solution: 'Solution'
 };
 
-const Table = () => {
+const Table = (props) => {
     const [rowsData, setRowsData] = useState(null);
     const [numberOfRows, setNumberOfRows] = useState(10);
     const [rowsToRender, setRowsToRender] = useState(null);
@@ -52,7 +52,7 @@ const Table = () => {
 
     // Rows data manipulation and formatting
     const updateRows = async () => {
-        const response = await getReportRows();
+        const response = await getReportRows(props.user);
         const sorted = sortRowsData(response);
         setRowsData(sorted);
     };
@@ -82,7 +82,7 @@ const Table = () => {
     const handleActions = async (rowId, action) => {
         if (action === 'edit') {
             try {
-                const rowData = await getReportRowById(rowId);
+                const rowData = await getReportRowById(props.user, rowId);
                 setEditRow(rowData);
                 setEditModal('is-active');
             } catch (error) {
@@ -110,7 +110,7 @@ const Table = () => {
     };
 
     const handleUpdateOneRow = (row, id) => {
-        updateReportRowById(row, id)
+        updateReportRowById(props.user, id, row)
             .then(() => {
                 updateRows();
                 setEditModal('');
@@ -164,7 +164,7 @@ const Table = () => {
     };
     const handleDeleteRow = async (rowId) => {
         try {
-            const deleteRow = await deleteReportRowById(deleteRowId);
+            const deleteRow = await deleteReportRowById(props.user, deleteRowId);
             if (deleteRow) {
                 setCancelModal('');
                 alert('row deleted successfully');

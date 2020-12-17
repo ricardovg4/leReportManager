@@ -62,9 +62,9 @@ const reportrowSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-const createReportrowModel = (user) => {
+const userReportrowModel = (user) => {
     return mongoose.model(`${user}Reportrow`, reportrowSchema);
 };
 
 // module.exports = mongoose.model('reportrow', reportrowSchema);
-module.exports = createReportrowModel;
+module.exports = userReportrowModel;

@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-async function getReportRowById(rowData, id) {
+async function updateReportRowById(username, id, rowData) {
     try {
         const res = await axios.put(
-            `http://localhost:5000/api/reportrow/${id}`,
+            `http://localhost:5000/api/reportrow/${username}/${id}`,
             rowData,
             {
                 withCredentials: true
@@ -19,4 +19,4 @@ async function getReportRowById(rowData, id) {
     }
 }
 
-export default getReportRowById;
+export default updateReportRowById;

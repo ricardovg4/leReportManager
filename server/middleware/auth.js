@@ -23,7 +23,9 @@ const auth = async (req, res, next) => {
             if (user) {
                 console.log('authenticated');
                 // Set user variable for next middleware
-                res.locals.username = user.username;
+                const { username, role, permissions } = user;
+                const userObject = { username, role, permissions };
+                res.locals.user = userObject;
                 next();
             } else if (!user) {
                 res.status(400).json({ msg: "username doesn't exist" });

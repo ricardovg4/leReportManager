@@ -65,7 +65,13 @@ const Navbar = (props) => {
                                         alt="avatar"
                                     />
                                 </figure>
-                                <div className="level-item">{user}</div>
+                                <div className="level-item">
+                                    {
+                                        <span style={{ textTransform: 'capitalize' }}>
+                                            {user}
+                                        </span>
+                                    }
+                                </div>
                             </div>
                             <div className="level-right"></div>
                         </div>

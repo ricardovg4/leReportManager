@@ -1,5 +1,4 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import postReportRows from 'apiCalls/reportRows/postReportRows';
 import getFile from '../apiCalls/files/getFile';
 
 import logo from '../assets/images/logo3.png';

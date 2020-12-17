@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-async function getReportRows() {
+async function getReportRows(username) {
     try {
-        const res = await axios.get('http://localhost:5000/api/reportrow', {
+        const res = await axios.get(`http://localhost:5000/api/reportrow/${username}`, {
             withCredentials: true
         });
         const data = await res.data;

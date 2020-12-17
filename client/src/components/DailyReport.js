@@ -12,12 +12,17 @@ const DailyReport = (props) => {
                         <span className="icon mr-2 ">
                             <FontAwesomeIcon icon={['fas', 'user']} size="1x" />
                         </span>
-                        {props.user}'s report
+                        {
+                            <span style={{ textTransform: 'capitalize' }}>
+                                {props.user}
+                            </span>
+                        }
+                        's report
                     </p>
                 </header>
 
                 <div className="card-content">
-                    <Table />
+                    <Table user={props.user} />
                 </div>
                 <footer className="card-footer">
                     <Pagination />

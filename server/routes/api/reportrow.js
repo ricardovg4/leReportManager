@@ -4,41 +4,36 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const User = require('../../models/users.model');
-const createReportrowModel = require('../../models/reportrow.model');
+const userReportrowModel = require('../../models/reportrow.model');
+const reportrowAuthorization = require('../../middleware/authorization/reportrowAuthorization');
 
-const retrieveUserId = async (token) => {
-    if (token) {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const id = decoded.id;
-
-        // Get user's id
-        const user = await User.findById(id);
-        console.log('user find');
-        if (user) {
-            return user.username;
-        }
-    }
-};
+// Middleware for all
+router.use('/:username', reportrowAuthorization);
 
 // find all, get
-router.get('/', async (req, res) => {
-    const username = await retrieveUserId(req.cookies.jwt);
-    const Reportrow = createReportrowModel(username);
-    Reportrow.find({})
+// router.get('/', (req, res) => {
+router.get('/:username', (req, res) => {
+    const username = req.params.username;
+    const Reportrow = userReportrowModel(username);
+    // if query string, perform a DB find query
+    const { customerEmail, customerPhone } = req.query;
+    const query = {
+        ...(customerEmail ? { customerEmail } : null),
+        ...(customerPhone ? { customerPhone } : null)
+    };
+    Reportrow.find({ ...query })
         // exclude fields form response
         .select('-createdAt -updatedAt -__v')
         .then((row) => {
             return res.status(200).json(row);
         })
         .catch((e) => {
-            res.status(400).json({ msg: e });
+            return res.status(400).json({ msg: e });
         });
 });
 
 // create one, post
-router.post('/', async (req, res) => {
+router.post('/:username', async (req, res) => {
     const {
         issue,
         customerName,
@@ -59,8 +54,8 @@ router.post('/', async (req, res) => {
             .json({ msg: `Please enter all required fields.${missing}` });
     }
     try {
-        const username = await retrieveUserId(req.cookies.jwt);
-        const Reportrow = createReportrowModel(username);
+        const username = req.params.username;
+        const Reportrow = userReportrowModel(username);
         const newReportrow = new Reportrow({ ...req.body });
         newReportrow
             .save()
@@ -77,9 +72,11 @@ router.post('/', async (req, res) => {
 });
 
 // find one, get
-router.get('/:id', async (req, res) => {
-    const username = await retrieveUserId(req.cookies.jwt);
-    const Reportrow = createReportrowModel(username);
+router.get('/:username/:id', async (req, res) => {
+    console.log(req.params);
+    console.log(req.query);
+    const username = req.params.username;
+    const Reportrow = userReportrowModel(username);
     const id = req.params.id;
     Reportrow.findById(id)
         .then((row) => {
@@ -91,9 +88,9 @@ router.get('/:id', async (req, res) => {
 });
 
 // update one, put
-router.put('/:id', async (req, res) => {
-    const username = await retrieveUserId(req.cookies.jwt);
-    const Reportrow = createReportrowModel(username);
+router.put('/:username/:id', async (req, res) => {
+    const username = req.params.username;
+    const Reportrow = userReportrowModel(username);
     const id = req.params.id;
     const updatedRow = req.body;
     if (updatedRow.date) {
@@ -109,7 +106,9 @@ router.put('/:id', async (req, res) => {
 });
 
 // delete one, delete
-router.delete('/:id', (req, res) => {
+router.delete('/:username/:id', (req, res) => {
+    const username = req.params.username;
+    const Reportrow = userReportrowModel(username);
     const id = req.params.id;
     Reportrow.findByIdAndDelete(id)
         .then(() => {
