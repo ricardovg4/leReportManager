@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const DailyReport = (props) => {
     return (
-        <section className="section py-4">
+        <section className="section py-4" id="daily-report">
             {/* Container class to make it centered and narrow */}
             <div className="card">
                 <header className="card-header">

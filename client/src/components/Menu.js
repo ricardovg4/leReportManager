@@ -36,11 +36,20 @@ const Menu = (props) => {
                 <p className="menu-label">General</p>
                 <ul className="menu-list">
                     <li>
-                        <a className="has-text-white is-active">Daily Report</a>
+                        <a
+                            className="has-text-white"
+                            // className="has-text-white is-active"
+                            onClick={() => {
+                                const dr = document.getElementById('daily-report');
+                                dr.scrollIntoView({ behavior: 'smooth' });
+                            }}
+                        >
+                            Daily Report
+                        </a>
                     </li>
-                    <li>
+                    {/* <li>
                         <a className="has-text-white">Dashboard</a>
-                    </li>
+                    </li> */}
                 </ul>
                 <p className="menu-label">Utilities</p>
                 <ul className="menu-list">

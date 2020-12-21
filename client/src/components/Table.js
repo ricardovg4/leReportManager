@@ -30,6 +30,7 @@ const header = {
 };
 
 const Table = (props) => {
+    const [test, setTest] = useState('');
     const [rowsData, setRowsData] = useState(null);
     const [numberOfRows, setNumberOfRows] = useState(10);
     const [rowsToRender, setRowsToRender] = useState(null);
@@ -51,8 +52,8 @@ const Table = (props) => {
     const [rowsDataUpdate, setRowsDataUpdate] = useContext(RowsDataUpdateContext);
 
     // Rows data manipulation and formatting
-    const updateRows = async () => {
-        const response = await getReportRows(props.user);
+    const updateRows = async (query) => {
+        const response = await getReportRows(props.user, query);
         const sorted = sortRowsData(response);
         setRowsData(sorted);
     };
@@ -97,6 +98,7 @@ const Table = (props) => {
 
     // Set date filters util for bulma calendar
     const setDateFilters = (startDate, endDate) => {
+        // reset pagination if dates are null
         if (startDate === null && endDate === null) {
             setFilters((prev) => {
                 return { ...prev, date: null };
@@ -104,6 +106,7 @@ const Table = (props) => {
             resetPagination();
             return false;
         }
+        // set filters with new data
         setFilters((prev) => {
             return { ...prev, date: { startDate, endDate } };
         });
@@ -248,6 +251,7 @@ const Table = (props) => {
         }
     }, [rowsData, numberOfRows, currentPage, filters]);
 
+    // reset pagination back to 1 when a date filter is applied
     useEffect(() => {
         if (rowsData && filters.date) {
             setCurrentPage(1);
@@ -258,7 +262,24 @@ const Table = (props) => {
     return (
         <div>
             <div className="level px-2 mb-2">
-                <div className="level-left"></div>
+                <div className="level-left">
+                    <div className="level-item">
+                        <div className="field has-addons">
+                            <input
+                                className="input"
+                                placeholder="email"
+                                value={test}
+                                onChange={(e) => setTest(e.target.value)}
+                            />
+                            <button
+                                className="button is-info"
+                                onClick={() => updateRows({ email: test })}
+                            >
+                                query
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <div className="level-right">
                     <div className="level-item">
                         <p className="subtitle is-6">Date filter</p>
@@ -308,7 +329,6 @@ const Table = (props) => {
                             {Object.entries(header).map(([key, value]) => {
                                 return <th key={key}>{value}</th>;
                             })}
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>

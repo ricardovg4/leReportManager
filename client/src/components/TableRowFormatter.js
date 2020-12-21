@@ -92,21 +92,23 @@ const TableRowFormatter = (props) => {
                     );
                 }
             })}
-            <td style={{ width: 'calc(100% / 14)' }}>
-                <div className="field is-horizontal">
-                    <ButtonIcon
-                        icon="edit"
-                        classColor="is-primary"
-                        style={{ marginRight: '6px' }}
-                        onclick={() => props.handleactions(row._id, 'edit')}
-                    />
-                    <ButtonIcon
-                        icon="trash"
-                        classColor="is-danger"
-                        onclick={() => props.handleactions(row._id, 'delete')}
-                    />
-                </div>
-            </td>
+            {!props.handleactions ? null : (
+                <td style={{ width: 'calc(100% / 14)' }}>
+                    <div className="field is-horizontal">
+                        <ButtonIcon
+                            icon="edit"
+                            classColor="is-primary"
+                            style={{ marginRight: '6px' }}
+                            onclick={() => props.handleactions(row._id, 'edit')}
+                        />
+                        <ButtonIcon
+                            icon="trash"
+                            classColor="is-danger"
+                            onclick={() => props.handleactions(row._id, 'delete')}
+                        />
+                    </div>
+                </td>
+            )}
         </tr>
     );
 };

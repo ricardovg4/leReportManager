@@ -16,11 +16,28 @@ router.get('/:username', (req, res) => {
     const username = req.params.username;
     const Reportrow = userReportrowModel(username);
     // if query string, perform a DB find query
-    const { customerEmail, customerPhone } = req.query;
+    const {
+        systemReferenceNumber,
+        systemReferenceOrigin,
+        customerEmail,
+        customerPhone,
+        dateStart,
+        dateEnd
+    } = req.query;
     const query = {
+        ...(systemReferenceNumber
+            ? { 'systemReferenceNumber.number': systemReferenceNumber }
+            : null),
+        ...(systemReferenceOrigin
+            ? { 'systemReferenceNumber.origin': systemReferenceOrigin }
+            : null),
         ...(customerEmail ? { customerEmail } : null),
-        ...(customerPhone ? { customerPhone } : null)
+        ...(customerPhone ? { customerPhone } : null),
+        ...(dateStart && dateEnd
+            ? { date: { $gte: new Date(dateStart), $lt: new Date(dateEnd) } }
+            : null)
     };
+    console.log(query);
     Reportrow.find({ ...query })
         // exclude fields form response
         .select('-createdAt -updatedAt -__v')

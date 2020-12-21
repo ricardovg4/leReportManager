@@ -89,7 +89,8 @@ const FormDailyReport = (props) => {
     };
 
     const row = {
-        date: toIsoString(new Date()),
+        // date: toIsoString(new Date()),
+        date: new Date(),
         ...(issue && { issue }),
         ...(referenceNumber && {
             systemReferenceNumber: [{ origin: systemReference, number: referenceNumber }]
@@ -108,6 +109,8 @@ const FormDailyReport = (props) => {
         e.preventDefault();
         if (issue && source && caseStatus) {
             //     // clearState();
+            console.log(row.date);
+            console.log(new Date());
             props.handleonerow(row, props.rowData ? props.rowData._id : null);
         }
     };
@@ -145,6 +148,11 @@ const FormDailyReport = (props) => {
                                         }
                                         setSystemReference(e.target.value);
                                     }}
+                                    // onBlur={() =>
+                                    //     props.handleonblur
+                                    //         ? props.handleonblur({ systemReference })
+                                    //         : null
+                                    // }
                                 >
                                     <option value="Magento">Magento</option>
                                     <option value="Amazon">Amazon</option>
@@ -164,6 +172,11 @@ const FormDailyReport = (props) => {
                                     setReferenceNumber(e.target.value);
                                 }}
                                 disabled={systemReference === 'None' ? true : false}
+                                onBlur={() =>
+                                    props.handleonblur
+                                        ? props.handleonblur({ referenceNumber })
+                                        : null
+                                }
                             />
                         </p>
                     </div>
@@ -213,6 +226,11 @@ const FormDailyReport = (props) => {
                                 onChange={(e) => {
                                     setPhone(e.target.value);
                                 }}
+                                onBlur={() =>
+                                    props.handleonblur
+                                        ? props.handleonblur({ phone })
+                                        : null
+                                }
                             />
                             <span className="icon is-small is-left">
                                 <FontAwesomeIcon
@@ -234,6 +252,11 @@ const FormDailyReport = (props) => {
                                 onChange={(e) => {
                                     setEmail(e.target.value);
                                 }}
+                                onBlur={() =>
+                                    props.handleonblur
+                                        ? props.handleonblur({ email })
+                                        : null
+                                }
                             />
                             <span className="icon is-small is-left">
                                 <FontAwesomeIcon icon={['fas', 'envelope']} size="1x" />
@@ -326,6 +349,7 @@ const FormDailyReport = (props) => {
                         Cancel
                     </button>
                 </div>
+                {props.children}
             </div>
         </form>
     );

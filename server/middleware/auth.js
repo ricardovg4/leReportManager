@@ -19,7 +19,6 @@ const auth = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         if (decoded) {
             const user = await User.findById(decoded.id);
-            console.log(user);
             if (user) {
                 console.log('authenticated');
                 // Set user variable for next middleware
