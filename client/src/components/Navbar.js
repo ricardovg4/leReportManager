@@ -68,7 +68,7 @@ const Navbar = (props) => {
                                 <div className="level-item">
                                     {
                                         <span style={{ textTransform: 'capitalize' }}>
-                                            {user}
+                                            {user.username}
                                         </span>
                                     }
                                 </div>

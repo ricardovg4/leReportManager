@@ -22,7 +22,8 @@ function LoginForm(props) {
         if (userRes) {
             setAuth(true);
             // Set context
-            setUser(userRes.username);
+            // setUser(userRes.username);
+            setUser(userRes.username ? userRes : null);
         } else {
             setAuth(false);
         }

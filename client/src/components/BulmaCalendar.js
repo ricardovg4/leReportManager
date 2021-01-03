@@ -59,11 +59,21 @@ const BulmaCalendar = (props) => {
         clear.addEventListener('click', (e) => {
             props.setdatefilters(null, null);
         });
+
+        // Add border radius to bulma calendar input
+        const inputWrapper = document.getElementsByClassName(
+            'datetimepicker-dummy-wrapper'
+        )[0];
+        inputWrapper.style.borderRadius = '4px';
     };
 
     useEffect(() => {
         initializeCalendars();
     }, []);
+
+    useEffect(() => {
+        props.handletimezone(timezone);
+    }, [timezone]);
 
     useEffect(() => {
         if (timezone && date.startDate && date.endDate) {
@@ -73,26 +83,24 @@ const BulmaCalendar = (props) => {
     }, [timezone, date]);
 
     return (
-        <div className="level">
-            <div className="level-left">
-                <div className="level-item">
-                    <div className="control">
-                        <input type="date" className="" />
-                    </div>
-                    <span className="select">
-                        <select
-                            value={timezone}
-                            onChange={(e) => setTimezone(e.target.value)}
-                        >
-                            <option value="America/New_York">America/New York</option>
-                            <option value="America/La_Paz">America/La Paz</option>
-                            <option value="Europe/London">Europe/London</option>
-                            <option value="Europe/Berlin">Europe/Berlin</option>
-                            <option value="Asia/Shanghai">Asia/Shanghai</option>
-                            <option value="Etc/UTC">UTC</option>
-                        </select>
-                    </span>
-                </div>
+        <div className="field is-horizontal">
+            <div className="control">
+                <input type="date" className="input" />
+            </div>
+            <div className="control">
+                <span className="select">
+                    <select
+                        value={timezone}
+                        onChange={(e) => setTimezone(e.target.value)}
+                    >
+                        <option value="America/New_York">America/New York</option>
+                        <option value="America/La_Paz">America/La Paz</option>
+                        <option value="Europe/London">Europe/London</option>
+                        <option value="Europe/Berlin">Europe/Berlin</option>
+                        <option value="Asia/Shanghai">Asia/Shanghai</option>
+                        <option value="Etc/UTC">Etc/UTC</option>
+                    </select>
+                </span>
             </div>
         </div>
     );

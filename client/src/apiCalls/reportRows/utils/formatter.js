@@ -1,20 +1,6 @@
-const { FontAwesomeIcon } = require('@fortawesome/react-fontawesome');
+import header from './reportHeader';
 
-const header = {
-    date: 'Date',
-    systemReferenceNumber: 'Reference Number',
-    issue: 'Issue',
-    customerName: 'Name',
-    customerPhone: 'Phone',
-    customerEmail: 'Email',
-    source: 'Source',
-    responseMethod: 'Response Method',
-    response: 'Response',
-    requestToCt: 'Request to CT',
-    caseStatus: 'Case Status',
-    follower: 'Follower',
-    solution: 'Solution'
-};
+const { FontAwesomeIcon } = require('@fortawesome/react-fontawesome');
 
 const ButtonIcon = (props) => {
     return (
@@ -22,9 +8,7 @@ const ButtonIcon = (props) => {
             className={`button is-small is-outlined  ${props.classColor}`}
             style={props.style}
             onClick={(e) => {
-                // console.log(props.id);
                 editID = props.id;
-                // console.log(editID);
             }}
         >
             <span className="icon">

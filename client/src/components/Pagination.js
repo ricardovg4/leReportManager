@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 
 // Context
 import { PaginationContext } from '../context/PaginationContext';

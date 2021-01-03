@@ -12,7 +12,6 @@ import {
     faTrash,
     faUser
 } from '@fortawesome/free-solid-svg-icons';
-import { faCode, faHighlighter } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
     faPlusCircle,

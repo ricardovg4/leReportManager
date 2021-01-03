@@ -18,6 +18,10 @@ async function getReportRows(username, filters) {
         if (filters.caseStatus) {
             query += `caseStatus=${filters.caseStatus}&`;
         }
+        if (filters.date && filters.date.startDate && filters.date.endDate) {
+            query += `startDate=${filters.date.startDate}&`;
+            query += `endDate=${filters.date.endDate}&`;
+        }
     }
     // console.log(`http://localhost:5000/api/reportrow/${username}?${query}`);
     try {

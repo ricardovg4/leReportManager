@@ -22,8 +22,8 @@ const auth = async (req, res, next) => {
             if (user) {
                 console.log('authenticated');
                 // Set user variable for next middleware
-                const { username, role, permissions } = user;
-                const userObject = { username, role, permissions };
+                const { username, role, reportPermissions } = user;
+                const userObject = { username, role, reportPermissions };
                 res.locals.user = userObject;
                 next();
             } else if (!user) {

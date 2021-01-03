@@ -37,9 +37,14 @@ router.post('/', async (req, res) => {
                     sameSite: 'strict',
                     maxAge: maxAge * 1000
                 });
-                return res
-                    .status(200)
-                    .json({ email: user.email, username: user.username });
+                return res.status(200).json({
+                    email: user.email,
+                    username: user.username,
+                    ...(user.reportPermissions.length > 0
+                        ? { reportPermissions: user.reportPermissions }
+                        : null),
+                    role: user.role
+                });
             } else {
                 if (req.cookies[jwtCookieName]) {
                     // delete jwt cookie if present when not auth

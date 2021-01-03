@@ -13,6 +13,8 @@ const cookieParser = require('cookie-parser');
 // instead of body-parser
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+// for large requests
+// app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
 app.use(
     cors({
@@ -46,6 +48,10 @@ app.use('/api/reportrow', auth, reportrow);
 // Files
 const files = require('./routes/files/files');
 app.use('/files', auth, files);
+
+// skuStatus
+const skuStatus = require('./routes/api/skuStatus');
+app.use('/skustatus', auth, skuStatus);
 
 // export
 module.exports = app;

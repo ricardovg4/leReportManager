@@ -21,8 +21,9 @@ router.get('/:username', (req, res) => {
         systemReferenceOrigin,
         customerEmail,
         customerPhone,
-        dateStart,
-        dateEnd
+        caseStatus,
+        startDate,
+        endDate
     } = req.query;
     const query = {
         ...(systemReferenceNumber
@@ -33,8 +34,9 @@ router.get('/:username', (req, res) => {
             : null),
         ...(customerEmail ? { customerEmail } : null),
         ...(customerPhone ? { customerPhone } : null),
-        ...(dateStart && dateEnd
-            ? { date: { $gte: new Date(dateStart), $lt: new Date(dateEnd) } }
+        ...(caseStatus ? { caseStatus } : null),
+        ...(startDate && endDate
+            ? { date: { $gte: new Date(startDate), $lte: new Date(endDate) } }
             : null)
     };
     console.log(query);
@@ -57,7 +59,7 @@ router.post('/:username', async (req, res) => {
         customerPhone,
         customerEmail,
         source,
-        responseMethod,
+        // responseMethod,
         response,
         comments,
         requestToCt,

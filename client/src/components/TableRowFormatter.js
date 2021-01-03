@@ -1,4 +1,11 @@
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 const { FontAwesomeIcon } = require('@fortawesome/react-fontawesome');
+
+// Dayjs initialization for plugins
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const ButtonIcon = (props) => {
     return (
@@ -15,6 +22,7 @@ const ButtonIcon = (props) => {
 };
 
 const TableRowFormatter = (props) => {
+    // console.log(props);
     const row = props.row;
     let keyNumber = 0;
     return (
@@ -27,8 +35,8 @@ const TableRowFormatter = (props) => {
                     let cell;
 
                     // check if object to format system reference number
-                    switch (typeof row[key]) {
-                        case 'object':
+                    switch (key) {
+                        case 'systemReferenceNumber':
                             cell = Object.entries(row[key]).map(([key, value]) => {
                                 let spacer = key == 0 ? '' : ', ';
                                 return String(
@@ -36,55 +44,64 @@ const TableRowFormatter = (props) => {
                                 );
                             });
                             break;
-                        case 'string':
-                            const date = new Date(row[key]);
-                            const formatedDate = row[key].slice(0, 10);
-                            cell =
-                                date == 'Invalid Date' ? (
-                                    row[key]
-                                ) : (
-                                    <span style={{ color: '#7a7a7a' }}>
-                                        {formatedDate}
-                                    </span>
-                                );
+
+                        case 'date':
+                            const formatedDate = dayjs(row[key])
+                                .tz(props.timezone ? props.timezone : 'Etc/UTC')
+                                .format('DD-MM-YYYY');
+                            cell = !dayjs(row[key]).isValid() ? (
+                                row[key]
+                            ) : (
+                                <span style={{ color: '#7a7a7a' }}>{formatedDate}</span>
+                            );
+
                             break;
+
+                        // Check for Case Status to format as tag
+                        case 'caseStatus':
+                            switch (row[key]) {
+                                case 'pending':
+                                    cell = (
+                                        <span className="tag is-danger">{row[key]}</span>
+                                    );
+                                    break;
+                                case 'solved':
+                                    cell = <span className="tag">{row[key]}</span>;
+                                    break;
+                                case 'waiting for cs answer':
+                                    cell = (
+                                        <span className="tag is-warning">{row[key]}</span>
+                                    );
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                            // }
+                            break;
+
+                        // Default as string
                         default:
                             cell = String(row[key]);
                             break;
                     }
 
-                    // Check for Case Status to format as tag
-                    switch (row[key]) {
-                        case 'pending':
-                            cell = <span className="tag is-danger">{row[key]}</span>;
-                            break;
-                        case 'solved':
-                            cell = <span className="tag">{row[key]}</span>;
-                            break;
-                        case 'waiting for cs answer':
-                            cell = <span className="tag is-warning">{row[key]}</span>;
-                            break;
-
-                        default:
-                            cell = <span style={{ fontSize: '14px' }}>{cell}</span>;
-                            break;
-                    }
                     return (
                         <td
                             style={{
-                                width: 'calc(100% / 13)',
+                                // width: 'calc(100% / 13)',
                                 wordBreak: 'break-word'
                             }}
                             key={keyTdProp}
                         >
-                            {cell}
+                            <span style={{ fontSize: '13px' }}>{cell}</span>
                         </td>
                     );
                 } else {
                     return (
                         <td
                             style={{
-                                width: 'calc(100% / 14)',
+                                // width: 'calc(100% / 13)',
                                 wordBreak: 'break-word'
                             }}
                             key={keyTdProp}
@@ -93,7 +110,8 @@ const TableRowFormatter = (props) => {
                 }
             })}
             {!props.handleactions ? null : (
-                <td style={{ width: 'calc(100% / 14)' }}>
+                // <td style={{ width: 'calc(100% / 14)' }}>
+                <td>
                     <div className="field is-horizontal">
                         <ButtonIcon
                             icon="edit"
@@ -101,11 +119,13 @@ const TableRowFormatter = (props) => {
                             style={{ marginRight: '6px' }}
                             onclick={() => props.handleactions(row._id, 'edit')}
                         />
-                        <ButtonIcon
-                            icon="trash"
-                            classColor="is-danger"
-                            onclick={() => props.handleactions(row._id, 'delete')}
-                        />
+                        {props.role === 'ct reviewer' ? null : (
+                            <ButtonIcon
+                                icon="trash"
+                                classColor="is-danger"
+                                onclick={() => props.handleactions(row._id, 'delete')}
+                            />
+                        )}
                     </div>
                 </td>
             )}

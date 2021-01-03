@@ -21,8 +21,9 @@ const usersSchema = new mongoose.Schema(
             enum: ['cs representative', 'ct reviewer'],
             required: true
         },
-        permissions: {
-            type: String
+        reportPermissions: {
+            type: Array
+            // enum: ['ricardo', 'francis']
         },
         date: {
             type: Date,

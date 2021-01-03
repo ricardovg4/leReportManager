@@ -11,34 +11,25 @@ import { PaginationContext } from '../context/PaginationContext';
 import { RowsDataUpdateContext } from '../context/RowsDataUpdateContext';
 import TableRowFormatter from './TableRowFormatter';
 import FormDailyReport from './FormDailyReportRow';
-
-// row formatter logic
-const header = {
-    date: 'Date',
-    systemReferenceNumber: 'Reference Number',
-    issue: 'Issue',
-    customerName: 'Name',
-    customerPhone: 'Phone',
-    customerEmail: 'Email',
-    source: 'Source',
-    responseMethod: 'Response Method',
-    response: 'Response',
-    requestToCt: 'Request to CT',
-    caseStatus: 'Case Status',
-    follower: 'Follower',
-    solution: 'Solution'
-};
+import header from '../apiCalls/reportRows/utils/reportHeader';
 
 const Table = (props) => {
-    const [test, setTest] = useState('');
     const [rowsData, setRowsData] = useState(null);
     const [numberOfRows, setNumberOfRows] = useState(10);
     const [rowsToRender, setRowsToRender] = useState(null);
-    const [filters, setFilters] = useState({ date: null, caseStatus: '' });
+    const [filters, setFilters] = useState({
+        date: null,
+        caseStatus: '',
+        email: null,
+        phone: null
+    });
     const [editModal, setEditModal] = useState('');
     const [editRow, setEditRow] = useState(null);
     const [cancelModal, setCancelModal] = useState('');
     const [deleteRowId, setDeleteRowId] = useState(null);
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [timezone, setTimezone] = useState(null);
 
     // Context
     const [
@@ -51,9 +42,34 @@ const Table = (props) => {
     ] = useContext(PaginationContext);
     const [rowsDataUpdate, setRowsDataUpdate] = useContext(RowsDataUpdateContext);
 
+    const resetFilters = {
+        date: null,
+        caseStatus: '',
+        email: null,
+        phone: null
+    };
+
+    const handleTimezone = (tz) => {
+        // console.log(tz);
+        setTimezone(tz);
+    };
+
     // Rows data manipulation and formatting
     const updateRows = async (query) => {
-        const response = await getReportRows(props.user, query);
+        let response;
+        try {
+            response = await getReportRows(props.user, query);
+        } catch (error) {
+            console.log(error);
+        }
+        // if query returns false
+        if (!response) {
+            setRowsData(null);
+            // alert('No items found');
+            return false;
+        }
+        // reset filters
+        resetPagination();
         const sorted = sortRowsData(response);
         setRowsData(sorted);
     };
@@ -150,6 +166,7 @@ const Table = (props) => {
                                     handleonerow={handleUpdateOneRow}
                                     submitButtonName="Save changes"
                                     confirmcancelone={confirmCancelOne}
+                                    role={props.role}
                                 />
                             ) : (
                                 'Loading...'
@@ -214,40 +231,22 @@ const Table = (props) => {
     };
 
     useEffect(() => {
+        setFilters(resetFilters);
         updateRows();
     }, [rowsDataUpdate]);
 
+    // use filters
     useEffect(() => {
+        updateRows(filters);
+    }, [filters]);
+
+    useEffect(() => {
+        if (!rowsData) {
+            setRowsToRender(null);
+        }
         if (rowsData) {
-            let rowsDataFiltered = null;
-
-            // Filters
-            if (filters.date || filters.caseStatus) {
-                rowsDataFiltered = rowsData.filter((row) => {
-                    let condition;
-                    if (filters.date && filters.caseStatus) {
-                        condition =
-                            row.date >= filters.date.startDate &&
-                            row.date <= filters.date.endDate &&
-                            row.caseStatus === filters.caseStatus;
-                    } else if (filters.date && !filters.caseStatus) {
-                        // Date filter
-                        condition =
-                            row.date >= filters.date.startDate &&
-                            row.date <= filters.date.endDate;
-                    } else if (!filters.date && filters.caseStatus) {
-                        condition = row.caseStatus === filters.caseStatus;
-                    }
-                    return condition;
-                });
-            } else {
-                rowsDataFiltered = null;
-            }
-
-            const filteredRows = currentRowsData(
-                rowsDataFiltered ? rowsDataFiltered : rowsData
-            );
-            setRowsToRender(filteredRows);
+            const currentRows = currentRowsData(rowsData);
+            setRowsToRender(currentRows);
         }
     }, [rowsData, numberOfRows, currentPage, filters]);
 
@@ -259,34 +258,35 @@ const Table = (props) => {
         }
     }, [filters]);
 
+    useEffect(() => {
+        updateRows();
+        // Update the rows when the user in props has changed
+    }, [props.user]);
+
     return (
         <div>
-            <div className="level px-2 mb-2">
+            <div className="level">
                 <div className="level-left">
                     <div className="level-item">
-                        <div className="field has-addons">
-                            <input
-                                className="input"
-                                placeholder="email"
-                                value={test}
-                                onChange={(e) => setTest(e.target.value)}
-                            />
-                            <button
-                                className="button is-info"
-                                onClick={() => updateRows({ email: test })}
-                            >
-                                query
-                            </button>
-                        </div>
+                        <p className="title is-6">Filters: </p>
                     </div>
                 </div>
                 <div className="level-right">
                     <div className="level-item">
-                        <p className="subtitle is-6">Date filter</p>
+                        <p className="subtitle is-6">Date</p>
                     </div>
                     <div className="level-item">
-                        <BulmaCalendar setdatefilters={setDateFilters} />
+                        <BulmaCalendar
+                            setdatefilters={setDateFilters}
+                            handletimezone={handleTimezone}
+                        />
                     </div>
+                </div>
+            </div>
+
+            <div className="level mb-2">
+                <div className="level-left"></div>
+                <div className="level-right" style={{ width: '100%' }}>
                     <div className="level-item">
                         <p className="subtitle is-6">Case status</p>
                     </div>
@@ -301,7 +301,6 @@ const Table = (props) => {
                                                 ...filters,
                                                 caseStatus: e.target.value
                                             });
-                                            resetPagination();
                                         }}
                                     >
                                         <option value="pending">Pending</option>
@@ -315,10 +314,58 @@ const Table = (props) => {
                             </div>
                         </div>
                     </div>
+                    <div className="level-item">
+                        <form>
+                            <div className="field has-addons is-horizontal">
+                                <div className="control">
+                                    <input
+                                        className="input"
+                                        placeholder="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        onBlur={(e) => {
+                                            setFilters({
+                                                ...filters,
+                                                email: email
+                                            });
+                                        }}
+                                    />
+                                </div>
+                                <div className="control">
+                                    <input
+                                        className="input"
+                                        placeholder="phone"
+                                        value={phone}
+                                        onChange={(e) => setPhone(e.target.value)}
+                                        onBlur={(e) => {
+                                            setFilters({
+                                                ...filters,
+                                                phone: phone
+                                            });
+                                        }}
+                                    />
+                                </div>
+                                <div className="control">
+                                    <button
+                                        className="button is-info "
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setFilters({
+                                                ...filters,
+                                                email: email,
+                                                phone: phone
+                                            });
+                                        }}
+                                    >
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
             <hr />
-
             <div
                 className="table-container"
                 style={{ height: '60vh', overflowY: 'auto' }}
@@ -327,26 +374,40 @@ const Table = (props) => {
                     <thead>
                         <tr>
                             {Object.entries(header).map(([key, value]) => {
-                                return <th key={key}>{value}</th>;
+                                return (
+                                    <th width="7.69%" key={key}>
+                                        {value}
+                                    </th>
+                                );
                             })}
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {rowsToRender
-                            ? rowsToRender.map((row) => {
-                                  return (
-                                      <TableRowFormatter
-                                          row={row}
-                                          header={header}
-                                          handleactions={handleActions}
-                                          key={row._id}
-                                      />
-                                  );
-                              })
-                            : null}
+                        {rowsToRender ? (
+                            rowsToRender.map((row) => {
+                                return (
+                                    <TableRowFormatter
+                                        row={row}
+                                        header={header}
+                                        handleactions={handleActions}
+                                        key={row._id}
+                                        timezone={timezone}
+                                        role={props.role}
+                                    />
+                                );
+                            })
+                        ) : (
+                            <tr>
+                                <td colSpan="13" className="has-text-centered">
+                                    No items found...
+                                </td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </div>
+
             <RowModal />
             <ConfirmDeleteModal />
         </div>

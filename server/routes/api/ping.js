@@ -18,7 +18,15 @@ router.get('/', (req, res) => {
         User.findById(id)
             .then((user) => {
                 if (user) {
-                    return res.status(200).json({ username: user.username });
+                    // return res.status(200).json({ username: user.username });
+                    return res.status(200).json({
+                        email: user.email,
+                        username: user.username,
+                        ...(user.reportPermissions.length > 0
+                            ? { reportPermissions: user.reportPermissions }
+                            : null),
+                        role: user.role
+                    });
                 }
             })
             .catch((e) => console.log(e));

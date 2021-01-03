@@ -6,6 +6,7 @@ export const PaginationProvider = (props) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [lastPageAvailable, setLastPageAvailable] = useState(null);
     const [paginationList, setPaginationList] = useState([0, 1, 2]);
+    const [numberOfRows, setNumberOfRows] = useState(1);
 
     return (
         <PaginationContext.Provider
@@ -15,7 +16,9 @@ export const PaginationProvider = (props) => {
                 lastPageAvailable,
                 setLastPageAvailable,
                 paginationList,
-                setPaginationList
+                setPaginationList,
+                numberOfRows,
+                setNumberOfRows
             ]}
         >
             {props.children}

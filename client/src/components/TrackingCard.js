@@ -61,6 +61,7 @@ const TrackingCard = (props) => {
                             <textarea
                                 rows="2"
                                 placeholder="Enter tracking numbers"
+                                autoFocus
                                 className="textarea"
                                 value={trackingNumber}
                                 onChange={(e) => {

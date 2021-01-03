@@ -7,29 +7,23 @@ import getReportRows from 'apiCalls/reportRows/getReportRows';
 import { RowsDataUpdateContext } from '../context/RowsDataUpdateContext';
 import FormDailyReportRow from './FormDailyReportRow';
 import TableRowFormatter from './TableRowFormatter';
-
-// row formatter logic
-const header = {
-    date: 'Date',
-    systemReferenceNumber: 'Reference Number',
-    issue: 'Issue',
-    customerName: 'Name',
-    customerPhone: 'Phone',
-    customerEmail: 'Email',
-    source: 'Source',
-    responseMethod: 'Response Method',
-    response: 'Response',
-    requestToCt: 'Request to CT',
-    caseStatus: 'Case Status',
-    follower: 'Follower',
-    solution: 'Solution'
-};
+import header from '../apiCalls/reportRows/utils/reportHeader';
 
 const CreateReportRow = (props) => {
     const [addOne, setAddOne] = useState(false);
     const [cancelModal, setCancelModal] = useState('');
-    const [query, setQuery] = useState({ email: null, phone: null });
+    const [query, setQuery] = useState({
+        email: null,
+        phone: null,
+        referenceNumber: null
+    });
     const [rowsMatch, setRowsMatch] = useState(null);
+
+    // const resetQuery = {
+    //     email: null,
+    //     phone: null,
+    //     referenceNumber: null
+    // };
 
     // Context
     const [rowsDataUpdate, setRowsDataUpdate] = useContext(RowsDataUpdateContext);
@@ -43,6 +37,8 @@ const CreateReportRow = (props) => {
             setAddOne(false);
             alert('row entered successfully!');
             setRowsDataUpdate(rowsDataUpdate + 1);
+            // reset rows match state
+            setRowsMatch(null);
             return true;
         }
         alert("couldn't post row request, please check your internet connection");
@@ -52,28 +48,29 @@ const CreateReportRow = (props) => {
     // Must check for: phone, email, reference number
     // blur handler for form
     const handleOnBlur = (queryFromForm) => {
+        // console.log(queryFromForm);
         const key = Object.keys(queryFromForm)[0];
         if (queryFromForm[key] && query[key] !== queryFromForm[key]) {
             setQuery({ ...query, ...queryFromForm });
         }
         // set state to null if it's not already when the returned data is empty
-        if (query[key] !== null && queryFromForm[key] === '') {
+        // if (query[key] !== null && queryFromForm[key] === '') {
+        if (queryFromForm[key] === '') {
             queryFromForm[key] = null;
             setQuery({ ...query, ...queryFromForm });
         }
     };
     useEffect(() => {
-        if (
-            query.email ||
-            query.phone ||
-            // (query.referenceNumber && query.systemReference)
-            query.referenceNumber
-        ) {
+        // console.log(query);
+        if (query.email || query.phone || query.referenceNumber) {
             const getPostFiltered = async () => {
                 const rowsMatching = await getReportRows(props.user, query);
                 setRowsMatch(rowsMatching);
             };
             getPostFiltered();
+        }
+        if (!query.email && !query.phone && !query.referenceNumber) {
+            setRowsMatch(null);
         }
     }, [query]);
 
@@ -100,6 +97,7 @@ const CreateReportRow = (props) => {
         setCancelModal('');
         // clear row lookup state
         setRowsMatch(null);
+        // setQuery(resetQuery);
     };
 
     const AddOneButton = () => {

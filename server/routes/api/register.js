@@ -9,6 +9,7 @@ router.post('/', async (req, res) => {
         const email = req.body.email;
         const password = req.body.password;
         const role = req.body.role;
+        const reportPermissions = req.body.reportPermissions;
 
         // check if email || password emtpy
         if (!username || !email || !password) {
@@ -22,6 +23,7 @@ router.post('/', async (req, res) => {
             email,
             password: hashedPassword,
             role,
+            reportPermissions,
             date: Date.now()
         });
         User.findOne({ email: email }).then((user) => {

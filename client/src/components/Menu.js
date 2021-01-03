@@ -54,8 +54,16 @@ const Menu = (props) => {
                 <p className="menu-label">Utilities</p>
                 <ul className="menu-list">
                     <li>
-                        <a className="has-text-white" onClick={props.togglerender}>
+                        <a
+                            className="has-text-white"
+                            onClick={props.toggletrackingrender}
+                        >
                             Track an order
+                        </a>
+                    </li>
+                    <li>
+                        <a className="has-text-white" onClick={props.toggleskurender}>
+                            SKU status
                         </a>
                     </li>
                 </ul>
@@ -70,9 +78,6 @@ const Menu = (props) => {
                         >
                             Lampux PDF
                         </a>
-                    </li>
-                    <li>
-                        <a className="has-text-white">SKU status</a>
                     </li>
                 </ul>
                 <p className="menu-label">Training</p>

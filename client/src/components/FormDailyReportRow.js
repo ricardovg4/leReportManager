@@ -11,10 +11,12 @@ const FormDailyReport = (props) => {
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
     const [source, setSource] = useState('');
-    const [responseMethod, setResponseMethod] = useState('');
+    // const [responseMethod, setResponseMethod] = useState('');
     const [response, setResponse] = useState('');
     const [requestToCt, setRequestToCt] = useState('');
     const [caseStatus, setCaseStatus] = useState('solved');
+    const [follower, setFollower] = useState('');
+    const [solution, setSolution] = useState('');
 
     // useEffect
     useEffect(() => {
@@ -46,9 +48,9 @@ const FormDailyReport = (props) => {
             if (rowData.source) {
                 setSource(rowData.source);
             }
-            if (rowData.responseMethod) {
-                setResponseMethod(rowData.responseMethod);
-            }
+            // if (rowData.responseMethod) {
+            //     setResponseMethod(rowData.responseMethod);
+            // }
             if (rowData.response) {
                 setResponse(rowData.response);
             }
@@ -99,18 +101,20 @@ const FormDailyReport = (props) => {
         ...(phone && { customerPhone: phone }),
         ...(email && { customerEmail: email }),
         ...(source && { source }),
-        ...(responseMethod && { responseMethod }),
+        // ...(responseMethod && { responseMethod }),
         ...(response && { response }),
         ...(requestToCt && { requestToCt }),
-        ...(caseStatus && { caseStatus })
+        ...(caseStatus && { caseStatus }),
+        ...(follower && { follower }),
+        ...(solution && { solution })
     };
 
     const handleSubmitAddOneRow = async (e) => {
         e.preventDefault();
         if (issue && source && caseStatus) {
             //     // clearState();
-            console.log(row.date);
-            console.log(new Date());
+            // console.log(row.date);
+            // console.log(new Date());
             props.handleonerow(row, props.rowData ? props.rowData._id : null);
         }
     };
@@ -131,6 +135,7 @@ const FormDailyReport = (props) => {
                                 placeholder="Case's source"
                                 required
                                 autoFocus
+                                disabled={props.role === 'ct reviewer'}
                             />
                         </div>
                     </div>
@@ -148,6 +153,7 @@ const FormDailyReport = (props) => {
                                         }
                                         setSystemReference(e.target.value);
                                     }}
+                                    disabled={props.role === 'ct reviewer'}
                                     // onBlur={() =>
                                     //     props.handleonblur
                                     //         ? props.handleonblur({ systemReference })
@@ -171,7 +177,11 @@ const FormDailyReport = (props) => {
                                 onChange={(e) => {
                                     setReferenceNumber(e.target.value);
                                 }}
-                                disabled={systemReference === 'None' ? true : false}
+                                disabled={
+                                    systemReference === 'None'
+                                        ? true
+                                        : false || props.role === 'ct reviewer'
+                                }
                                 onBlur={() =>
                                     props.handleonblur
                                         ? props.handleonblur({ referenceNumber })
@@ -193,6 +203,7 @@ const FormDailyReport = (props) => {
                                 onChange={(e) => {
                                     setIssue(e.target.value);
                                 }}
+                                disabled={props.role === 'ct reviewer'}
                                 required
                             ></textarea>
                         </div>
@@ -210,6 +221,7 @@ const FormDailyReport = (props) => {
                                 onChange={(e) => {
                                     setName(e.target.value);
                                 }}
+                                disabled={props.role === 'ct reviewer'}
                             />
                             <span className="icon is-small is-left">
                                 <FontAwesomeIcon icon={['fas', 'user']} size="1x" />
@@ -231,6 +243,7 @@ const FormDailyReport = (props) => {
                                         ? props.handleonblur({ phone })
                                         : null
                                 }
+                                disabled={props.role === 'ct reviewer'}
                             />
                             <span className="icon is-small is-left">
                                 <FontAwesomeIcon
@@ -257,6 +270,7 @@ const FormDailyReport = (props) => {
                                         ? props.handleonblur({ email })
                                         : null
                                 }
+                                disabled={props.role === 'ct reviewer'}
                             />
                             <span className="icon is-small is-left">
                                 <FontAwesomeIcon icon={['fas', 'envelope']} size="1x" />
@@ -272,7 +286,7 @@ const FormDailyReport = (props) => {
                 </FormField>
 
                 <FormField label="Response">
-                    <div className="field">
+                    {/* <div className="field">
                         <p className="control has-icons-left">
                             <input
                                 className="input"
@@ -282,12 +296,13 @@ const FormDailyReport = (props) => {
                                 onChange={(e) => {
                                     setResponseMethod(e.target.value);
                                 }}
+                                disabled={props.role === 'ct reviewer'}
                             />
                             <span className="icon is-small is-left">
                                 <FontAwesomeIcon icon={['fas', 'user']} size="1x" />
                             </span>
                         </p>
-                    </div>
+                    </div> */}
                     <div className="field">
                         <div className="control">
                             <textarea
@@ -298,6 +313,7 @@ const FormDailyReport = (props) => {
                                 onChange={(e) => {
                                     setResponse(e.target.value);
                                 }}
+                                disabled={props.role === 'ct reviewer'}
                             ></textarea>
                         </div>
                     </div>
@@ -314,6 +330,7 @@ const FormDailyReport = (props) => {
                                 onChange={(e) => {
                                     setRequestToCt(e.target.value);
                                 }}
+                                disabled={props.role === 'ct reviewer'}
                             ></textarea>
                         </div>
                     </div>
@@ -340,6 +357,40 @@ const FormDailyReport = (props) => {
                         </div>
                     </div>
                 </FormField>
+
+                {props.role !== 'ct reviewer' ? null : (
+                    <FormField label="Follower">
+                        <div className="field">
+                            <div className="control">
+                                <input
+                                    className="input"
+                                    placeholder="Follower"
+                                    value={follower}
+                                    onChange={(e) => {
+                                        setFollower(e.target.value);
+                                    }}
+                                ></input>
+                            </div>
+                        </div>
+                    </FormField>
+                )}
+
+                {props.role !== 'ct reviewer' ? null : (
+                    <FormField label="Solution">
+                        <div className="field">
+                            <div className="control">
+                                <input
+                                    className="input"
+                                    placeholder="Solution"
+                                    value={solution}
+                                    onChange={(e) => {
+                                        setSolution(e.target.value);
+                                    }}
+                                ></input>
+                            </div>
+                        </div>
+                    </FormField>
+                )}
 
                 <div className="buttons is-right mt-5">
                     <button className="button is-primary mr-4" id="submit-row-button">

@@ -38,9 +38,9 @@ const reportrowSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        responseMethod: {
-            type: String
-        },
+        // responseMethod: {
+        //     type: String
+        // },
         response: {
             type: String
         },
