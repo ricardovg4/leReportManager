@@ -1,8 +1,10 @@
 import axios from 'axios';
+import baseUrl from '../baseUrl';
 
 const getFile = (file) => {
     axios({
-        url: `http://localhost:5000/files/${file}`,
+        // url: `http://localhost:5000/files/${file}`,
+        url: `${baseUrl}/files/${file}`,
         method: 'GET',
         withCredentials: true,
         responseType: 'blob' // important

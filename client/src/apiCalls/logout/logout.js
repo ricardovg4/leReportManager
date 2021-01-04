@@ -1,8 +1,9 @@
 import axios from 'axios';
+import baseUrl from '../baseUrl';
 
 async function logout(email, password) {
     try {
-        const res = await axios.get('http://localhost:5000/logout', {
+        const res = await axios.get(`${baseUrl}/logout`, {
             withCredentials: true
         });
         const data = res.data;

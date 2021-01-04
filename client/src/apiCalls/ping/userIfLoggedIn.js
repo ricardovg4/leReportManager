@@ -1,8 +1,9 @@
 import axios from 'axios';
+import baseUrl from '../baseUrl';
 
 const userIfLoggedIn = async () => {
     try {
-        const res = await axios.get('http://localhost:5000/api/ping', {
+        const res = await axios.get(`${baseUrl}/api/ping`, {
             withCredentials: true
         });
         const data = await res.data;

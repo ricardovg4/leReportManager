@@ -1,13 +1,11 @@
 import axios from 'axios';
+import baseUrl from '../baseUrl';
 
 async function deleteReportRowById(username, id) {
     try {
-        const res = await axios.delete(
-            `http://localhost:5000/api/reportrow/${username}/${id}`,
-            {
-                withCredentials: true
-            }
-        );
+        const res = await axios.delete(`${baseUrl}/api/reportrow/${username}/${id}`, {
+            withCredentials: true
+        });
         const data = await res.data;
         return data;
     } catch (error) {

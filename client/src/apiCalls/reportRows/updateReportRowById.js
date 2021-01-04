@@ -1,9 +1,10 @@
 import axios from 'axios';
+import baseUrl from '../baseUrl';
 
 async function updateReportRowById(username, id, rowData) {
     try {
         const res = await axios.put(
-            `http://localhost:5000/api/reportrow/${username}/${id}`,
+            `${baseUrl}/api/reportrow/${username}/${id}`,
             rowData,
             {
                 withCredentials: true

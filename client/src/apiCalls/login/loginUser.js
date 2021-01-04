@@ -1,9 +1,10 @@
 import axios from 'axios';
+import baseUrl from '../baseUrl';
 
 async function loginUser(email, password) {
     try {
         const res = await axios.post(
-            'http://localhost:5000/login',
+            `${baseUrl}/login`,
             {
                 email: email,
                 password: password

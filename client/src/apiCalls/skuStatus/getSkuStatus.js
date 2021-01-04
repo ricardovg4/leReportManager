@@ -1,8 +1,9 @@
 import axios from 'axios';
+import baseUrl from '../baseUrl';
 
 async function getSkuStatus(sku) {
     try {
-        const res = await axios.get(`http://localhost:5000/skustatus/${sku}`, {
+        const res = await axios.get(`${baseUrl}/skustatus/${sku}`, {
             withCredentials: true
         });
         const data = await res.data;

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import baseUrl from '../baseUrl';
 
 async function getReportRows(username, filters) {
     let query = '';
@@ -23,14 +24,11 @@ async function getReportRows(username, filters) {
             query += `endDate=${filters.date.endDate}&`;
         }
     }
-    // console.log(`http://localhost:5000/api/reportrow/${username}?${query}`);
+    // console.log(`${baseUrl}/api/reportrow/${username}?${query}`);
     try {
-        const res = await axios.get(
-            `http://localhost:5000/api/reportrow/${username}?${query}`,
-            {
-                withCredentials: true
-            }
-        );
+        const res = await axios.get(`${baseUrl}/api/reportrow/${username}?${query}`, {
+            withCredentials: true
+        });
         const data = await res.data;
         if (!data.length) {
             return false;
