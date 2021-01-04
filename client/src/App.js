@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense, lazy } from 'react';
 import { Route, Switch, BrowserRouter as Router, Redirect } from 'react-router-dom';
 
 // scss
 import './App.scss';
 
 // routes
-import LoginPage from './pages/Login/LoginPage';
-import NotFound from './pages/NotFound/NotFound';
-import Dashboard from './pages/Dashboard/Dashboard';
-import Loading from './pages/Loading/Loading';
+// import LoginPage from './pages/Login/LoginPage';
+// import NotFound from './pages/NotFound/NotFound';
+// import Dashboard from './pages/Dashboard/Dashboard';
+// import Loading from './pages/Loading/Loading';
 
 // Context
 import { useContext } from 'react';
@@ -16,6 +16,12 @@ import { UserContext } from './context/UserContext';
 
 // Utils
 import userIfLoggedIn from './apiCalls/ping/userIfLoggedIn';
+
+// lazy loading
+const LoginPage = lazy(() => import('./pages/Login/LoginPage'));
+const NotFound = lazy(() => import('./pages/NotFound/NotFound'));
+const Dashboard = lazy(() => import('./pages/Dashboard/Dashboard'));
+const Loading = lazy(() => import('./pages/Loading/Loading'));
 
 function App() {
     const [user, setUser] = useContext(UserContext);
@@ -37,40 +43,54 @@ function App() {
 
     return (
         <Router>
-            <div className="App">
-                <Switch>
-                    <Route
-                        exact
-                        path="/login"
-                        // component={LoginPage}
-                        render={() =>
-                            loading ? (
-                                <Loading />
-                            ) : user ? (
-                                <Redirect to="/dashboard" />
-                            ) : (
-                                <LoginPage />
-                            )
-                        }
-                    />
-                    <Route
-                        exact
-                        path="/dashboard"
-                        render={() =>
-                            loading ? <Loading /> : user ? <Dashboard /> : <LoginPage />
-                        }
-                    />
-                    <Route
-                        exact
-                        path="/"
-                        render={() =>
-                            loading ? <Loading /> : user ? <Dashboard /> : <LoginPage />
-                        }
-                    />
-                    <Route path="/loading" component={Loading} />
-                    <NotFound />
-                </Switch>
-            </div>
+            <Suspense fallback={<div>Loading...</div>}>
+                <div className="App">
+                    <Switch>
+                        <Route
+                            exact
+                            path="/login"
+                            // component={LoginPage}
+                            render={() =>
+                                loading ? (
+                                    <Loading />
+                                ) : user ? (
+                                    <Redirect to="/dashboard" />
+                                ) : (
+                                    <LoginPage />
+                                )
+                            }
+                        />
+                        <Route
+                            exact
+                            path="/dashboard"
+                            render={() =>
+                                loading ? (
+                                    <Loading />
+                                ) : user ? (
+                                    <Dashboard />
+                                ) : (
+                                    <LoginPage />
+                                )
+                            }
+                        />
+                        <Route
+                            exact
+                            path="/"
+                            render={() =>
+                                loading ? (
+                                    <Loading />
+                                ) : user ? (
+                                    <Dashboard />
+                                ) : (
+                                    <LoginPage />
+                                )
+                            }
+                        />
+                        <Route path="/loading" component={Loading} />
+                        <NotFound />
+                    </Switch>
+                </div>
+            </Suspense>
         </Router>
     );
 }
