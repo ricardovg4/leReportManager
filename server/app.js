@@ -19,7 +19,7 @@ app.use(cookieParser());
 app.use(
     cors({
         // origin: 'http://localhost:3000',
-        origin: 'https://leproreportmanager.com',
+        origin: 'https://lereportmanager.com',
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
         credentials: true
     })
