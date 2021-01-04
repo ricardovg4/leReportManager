@@ -49,7 +49,6 @@ function App() {
                         <Route
                             exact
                             path="/login"
-                            // component={LoginPage}
                             render={() =>
                                 loading ? (
                                     <Loading />
@@ -86,7 +85,6 @@ function App() {
                                 )
                             }
                         />
-                        <Route path="/loading" component={Loading} />
                         <NotFound />
                     </Switch>
                 </div>
