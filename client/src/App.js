@@ -8,7 +8,7 @@ import './App.scss';
 // import LoginPage from './pages/Login/LoginPage';
 // import NotFound from './pages/NotFound/NotFound';
 // import Dashboard from './pages/Dashboard/Dashboard';
-// import Loading from './pages/Loading/Loading';
+import Loading from './pages/Loading/Loading';
 
 // Context
 import { useContext } from 'react';
@@ -21,7 +21,7 @@ import userIfLoggedIn from './apiCalls/ping/userIfLoggedIn';
 const LoginPage = lazy(() => import('./pages/Login/LoginPage'));
 const NotFound = lazy(() => import('./pages/NotFound/NotFound'));
 const Dashboard = lazy(() => import('./pages/Dashboard/Dashboard'));
-const Loading = lazy(() => import('./pages/Loading/Loading'));
+// const Loading = lazy(() => import('./pages/Loading/Loading'));
 
 function App() {
     const [user, setUser] = useContext(UserContext);
@@ -43,7 +43,7 @@ function App() {
 
     return (
         <Router>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loading />}>
                 <div className="App">
                     <Switch>
                         <Route
