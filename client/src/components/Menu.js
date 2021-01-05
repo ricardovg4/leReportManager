@@ -1,12 +1,23 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import getFile from '../apiCalls/files/getFile';
+import logout from '../apiCalls/logout/logout';
+import { useContext } from 'react';
+import { UserContext } from '../context/UserContext';
 
 import logo from '../assets/images/logo3.png';
 
 const Menu = (props) => {
     const [excelProgress, setExcelProgress] = useState(null);
     const [lampuxProgress, setLampuxProgress] = useState(null);
+    const [redirectLogout, setRedirectLogout] = useState(false);
+    const [user, setUser] = useContext(UserContext);
+
+    const logoutHandler = () => {
+        logout();
+        setUser(null);
+        setRedirectLogout(true);
+    };
 
     return (
         <div
@@ -137,6 +148,7 @@ const Menu = (props) => {
                         left: '0%',
                         width: '100%'
                     }}
+                    onClick={logoutHandler}
                 >
                     <span className="icon">
                         <FontAwesomeIcon icon={['fas', 'sign-out-alt']} size="1x" />
