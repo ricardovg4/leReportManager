@@ -19,11 +19,11 @@ const CreateReportRow = (props) => {
     });
     const [rowsMatch, setRowsMatch] = useState(null);
 
-    // const resetQuery = {
-    //     email: null,
-    //     phone: null,
-    //     referenceNumber: null
-    // };
+    const resetQuery = {
+        email: null,
+        phone: null,
+        referenceNumber: null
+    };
 
     // Context
     const [rowsDataUpdate, setRowsDataUpdate] = useContext(RowsDataUpdateContext);
@@ -39,6 +39,7 @@ const CreateReportRow = (props) => {
             setRowsDataUpdate(rowsDataUpdate + 1);
             // reset rows match state
             setRowsMatch(null);
+            setQuery(resetQuery);
             return true;
         }
         alert("couldn't post row request, please check your internet connection");
@@ -97,7 +98,7 @@ const CreateReportRow = (props) => {
         setCancelModal('');
         // clear row lookup state
         setRowsMatch(null);
-        // setQuery(resetQuery);
+        setQuery(resetQuery);
     };
 
     const AddOneButton = () => {
