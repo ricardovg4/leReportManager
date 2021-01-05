@@ -4,7 +4,7 @@ const { FontAwesomeIcon } = require('@fortawesome/react-fontawesome');
 
 const TrackingCard = (props) => {
     const [trackingNumber, setTrackingNumber] = useState('');
-    const [carrier, setCarrier] = useState('UPS');
+    const [carrier, setCarrier] = useState('ups');
 
     const track = (e) => {
         e.preventDefault();
