@@ -1,9 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 import getFile from '../apiCalls/files/getFile';
 
 import logo from '../assets/images/logo3.png';
 
 const Menu = (props) => {
+    const [excelProgress, setExcelProgress] = useState(null);
+    const [lampuxProgress, setLampuxProgress] = useState(null);
+
     return (
         <div
             style={{
@@ -73,10 +77,24 @@ const Menu = (props) => {
                         <a
                             className="has-text-white"
                             onClick={() => {
-                                getFile('LampUX-Guide-20200518.pdf');
+                                getFile('LampUX-Guide-20200518.pdf', (progress) => {
+                                    setLampuxProgress(progress);
+                                    if (progress === 100) {
+                                        setLampuxProgress(null);
+                                    }
+                                });
                             }}
                         >
                             Lampux PDF
+                            {!lampuxProgress ? null : (
+                                <progress
+                                    className="progress is-primary is-small"
+                                    value={lampuxProgress}
+                                    max="100"
+                                >
+                                    0%
+                                </progress>
+                            )}
                         </a>
                     </li>
                 </ul>
@@ -89,10 +107,24 @@ const Menu = (props) => {
                         <a
                             className="has-text-white"
                             onClick={() => {
-                                getFile('le-cs-training.xlsx');
+                                getFile('le-cs-training.xlsx', (progress) => {
+                                    setExcelProgress(progress);
+                                    if (progress === 100) {
+                                        setExcelProgress(null);
+                                    }
+                                });
                             }}
                         >
                             Excel sheet
+                            {!excelProgress ? null : (
+                                <progress
+                                    className="progress is-primary is-small"
+                                    value={excelProgress}
+                                    max="100"
+                                >
+                                    0%
+                                </progress>
+                            )}
                         </a>
                     </li>
                 </ul>

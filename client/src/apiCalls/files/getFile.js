@@ -1,13 +1,19 @@
 import axios from 'axios';
 import baseUrl from '../baseUrl';
 
-const getFile = (file) => {
+const getFile = (file, progressCallback) => {
     axios({
         // url: `http://localhost:5000/files/${file}`,
         url: `${baseUrl}/files/${file}`,
         method: 'GET',
         withCredentials: true,
-        responseType: 'blob' // important
+        responseType: 'blob', // important
+        onDownloadProgress(progressEvent) {
+            const progress = Math.round(
+                (progressEvent.loaded / progressEvent.total) * 100
+            );
+            progressCallback(progress);
+        }
     }).then((response) => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
