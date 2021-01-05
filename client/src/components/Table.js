@@ -29,6 +29,7 @@ const Table = (props) => {
     const [deleteRowId, setDeleteRowId] = useState(null);
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+    const [referenceNumber, setReferenceNumber] = useState('');
     const [timezone, setTimezone] = useState(null);
 
     // Context
@@ -313,6 +314,37 @@ const Table = (props) => {
                                 </span>
                             </div>
                         </div>
+                    </div>
+                    <div className="level-item">
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+
+                                setFilters({
+                                    ...filters,
+                                    referenceNumber
+                                });
+                            }}
+                        >
+                            <div className="field is-horizontal">
+                                <div className="control">
+                                    <input
+                                        className="input"
+                                        placeholder="Order number"
+                                        value={referenceNumber}
+                                        onChange={(e) => {
+                                            setReferenceNumber(e.target.value);
+                                        }}
+                                        onBlur={(e) => {
+                                            setFilters({
+                                                ...filters,
+                                                referenceNumber
+                                            });
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div className="level-item">
                         <form>
