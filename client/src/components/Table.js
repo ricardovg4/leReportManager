@@ -56,7 +56,7 @@ const Table = (props) => {
     };
 
     // Rows data manipulation and formatting
-    const updateRows = async (query) => {
+    const updateRows = async (query, resetPaginationOnUpdate = true) => {
         let response;
         try {
             response = await getReportRows(props.user, query);
@@ -70,7 +70,9 @@ const Table = (props) => {
             return false;
         }
         // reset filters
-        resetPagination();
+        if (resetPaginationOnUpdate) {
+            resetPagination();
+        }
         const sorted = sortRowsData(response);
         setRowsData(sorted);
     };
@@ -132,7 +134,7 @@ const Table = (props) => {
     const handleUpdateOneRow = (row, id) => {
         updateReportRowById(props.user, id, row)
             .then(() => {
-                updateRows();
+                updateRows(filters ? filters : null, false);
                 setEditModal('');
                 setEditRow(null);
             })
@@ -251,6 +253,10 @@ const Table = (props) => {
             setRowsToRender(currentRows);
         }
     }, [rowsData, numberOfRows, currentPage, filters]);
+
+    // useEffect(() => {
+    //     console.log(rowsToRender);
+    // }, [rowsToRender]);
 
     // reset pagination back to 1 when a date filter is applied
     useEffect(() => {
