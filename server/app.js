@@ -1,6 +1,9 @@
+let localOrigin;
+
 // dotenv if on development
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
+    localOrigin = 'http://localhost:3000';
 }
 
 const express = require('express');
@@ -18,8 +21,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
     cors({
-        // origin: 'http://localhost:3000',
-        origin: 'https://www.lereportmanager.com',
+        origin: localOrigin ? localOrigin : 'https://www.lereportmanager.com',
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
         credentials: true
     })
