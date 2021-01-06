@@ -62,7 +62,11 @@ const DailyReport = (props) => {
                 <div className="card-content">
                     {props.role === 'ct reviewer' ? (
                         currentUserReport ? (
-                            <Table user={currentUserReport} role={props.role} />
+                            <Table
+                                user={currentUserReport}
+                                role={props.role}
+                                reviewerUsername={props.user}
+                            />
                         ) : null
                     ) : (
                         <Table user={props.user} role={props.role} />

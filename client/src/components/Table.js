@@ -168,6 +168,7 @@ const Table = (props) => {
                                     submitButtonName="Save changes"
                                     confirmcancelone={confirmCancelOne}
                                     role={props.role}
+                                    reviewerUsername={props.reviewerUsername}
                                 />
                             ) : (
                                 'Loading...'

@@ -60,35 +60,47 @@ const FormDailyReport = (props) => {
             if (rowData.caseStatus) {
                 setCaseStatus(rowData.caseStatus);
             }
+            if (props.role === 'ct reviewer') {
+                const reviewerUsername =
+                    props.reviewerUsername.charAt(0).toUpperCase() +
+                    props.reviewerUsername.slice(1);
+                setFollower(reviewerUsername);
+            }
+            if (rowData.follower) {
+                setFollower(rowData.follower);
+            }
+            if (rowData.solution) {
+                setSolution(rowData.solution);
+            }
         }
     }, []);
 
-    // toISOstring without timezone shifting
-    const toIsoString = function (dt) {
-        var tzo = -dt.getTimezoneOffset(),
-            dif = tzo >= 0 ? '+' : '-',
-            pad = function (num) {
-                var norm = Math.floor(Math.abs(num));
-                return (norm < 10 ? '0' : '') + norm;
-            };
-        return (
-            dt.getFullYear() +
-            '-' +
-            pad(dt.getMonth() + 1) +
-            '-' +
-            pad(dt.getDate()) +
-            'T' +
-            pad(dt.getHours()) +
-            ':' +
-            pad(dt.getMinutes()) +
-            ':' +
-            pad(dt.getSeconds()) +
-            dif +
-            pad(tzo / 60) +
-            ':' +
-            pad(tzo % 60)
-        );
-    };
+    // // toISOstring without timezone shifting
+    // const toIsoString = function (dt) {
+    //     var tzo = -dt.getTimezoneOffset(),
+    //         dif = tzo >= 0 ? '+' : '-',
+    //         pad = function (num) {
+    //             var norm = Math.floor(Math.abs(num));
+    //             return (norm < 10 ? '0' : '') + norm;
+    //         };
+    //     return (
+    //         dt.getFullYear() +
+    //         '-' +
+    //         pad(dt.getMonth() + 1) +
+    //         '-' +
+    //         pad(dt.getDate()) +
+    //         'T' +
+    //         pad(dt.getHours()) +
+    //         ':' +
+    //         pad(dt.getMinutes()) +
+    //         ':' +
+    //         pad(dt.getSeconds()) +
+    //         dif +
+    //         pad(tzo / 60) +
+    //         ':' +
+    //         pad(tzo % 60)
+    //     );
+    // };
 
     const row = {
         // date: toIsoString(new Date()),
