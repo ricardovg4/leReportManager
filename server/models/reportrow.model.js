@@ -20,6 +20,11 @@ const reportrowSchema = new mongoose.Schema(
             required: true
         },
         // array syntax needed for when the child may be called more than 1 time
+        // country: {
+        //     type: String,
+        //     enum: ['us', 'uk', 'ca', 'de'],
+        //     required: true
+        // },
         systemReferenceNumber: [systemReferenceNumber],
         issue: {
             type: String,
