@@ -1,6 +1,8 @@
+let secure = true;
 // dotenv if on development
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
+    secure = false;
 }
 
 const express = require('express');
@@ -36,6 +38,7 @@ router.post('/', async (req, res) => {
                 res.cookie(jwtCookieName, token, {
                     httpOnly: true,
                     sameSite: 'strict',
+                    // secure: true,
                     maxAge: maxAge * 1000
                 });
                 return res.status(200).json({
