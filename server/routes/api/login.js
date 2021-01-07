@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
                 console.log(`${user.email} logged in`);
                 res.cookie(jwtCookieName, token, {
                     httpOnly: true,
-                    sameSite: 'strict',
+                    // sameSite: 'strict',
                     secure: secure,
                     maxAge: maxAge * 1000
                 });
