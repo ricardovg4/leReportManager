@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
                 res.cookie(jwtCookieName, token, {
                     httpOnly: true,
                     sameSite: 'strict',
-                    // secure: true,
+                    secure: secure,
                     maxAge: maxAge * 1000
                 });
                 return res.status(200).json({
