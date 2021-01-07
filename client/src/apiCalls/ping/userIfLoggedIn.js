@@ -10,7 +10,7 @@ const userIfLoggedIn = async () => {
         return data;
     } catch (error) {
         if (error.response) {
-            console.log(error.response.data);
+            // console.log(error.response.data);
         }
         return false;
     }

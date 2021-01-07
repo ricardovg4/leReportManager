@@ -10,7 +10,8 @@ const User = require('../../models/users.model');
 const jwt = require('jsonwebtoken');
 
 // max age, duration, of the cookie/jwt in seconds
-const maxAge = 60 * 60 * 10;
+// const maxAge = 60 * 60 * 10;
+const maxAge = 60;
 // create jwt
 const createJwtToken = (id) => {
     const token = jwt.sign({ id }, process.env.JWT_SECRET, {

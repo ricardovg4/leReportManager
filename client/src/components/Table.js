@@ -14,15 +14,25 @@ import FormDailyReport from './FormDailyReportRow';
 import header from '../apiCalls/reportRows/utils/reportHeader';
 
 const Table = (props) => {
+    const resetFilters = {
+        date: null,
+        country: '',
+        caseStatus: '',
+        email: null,
+        phone: null,
+        referenceNumber: null
+    };
+
     const [rowsData, setRowsData] = useState(null);
     const [numberOfRows, setNumberOfRows] = useState(10);
     const [rowsToRender, setRowsToRender] = useState(null);
-    const [filters, setFilters] = useState({
-        date: null,
-        caseStatus: '',
-        email: null,
-        phone: null
-    });
+    // const [filters, setFilters] = useState({
+    //     date: null,
+    //     caseStatus: '',
+    //     email: null,
+    //     phone: null
+    // });
+    const [filters, setFilters] = useState(resetFilters);
     const [editModal, setEditModal] = useState('');
     const [editRow, setEditRow] = useState(null);
     const [cancelModal, setCancelModal] = useState('');
@@ -42,13 +52,6 @@ const Table = (props) => {
         setPaginationList
     ] = useContext(PaginationContext);
     const [rowsDataUpdate, setRowsDataUpdate] = useContext(RowsDataUpdateContext);
-
-    const resetFilters = {
-        date: null,
-        caseStatus: '',
-        email: null,
-        phone: null
-    };
 
     const handleTimezone = (tz) => {
         // console.log(tz);

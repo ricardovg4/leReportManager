@@ -10,8 +10,8 @@ async function postReportRows(username, rowData) {
         return data;
     } catch (error) {
         if (error.response) {
-            console.log(error.response.data);
-            console.log(rowData);
+            // console.log(error.response.data);
+            console.log(error.response.status);
         }
         return false;
     }

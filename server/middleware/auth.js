@@ -30,6 +30,9 @@ const auth = async (req, res, next) => {
                 res.status(400).json({ msg: "username doesn't exist" });
             }
         }
+        if (!decoded) {
+            res.status(400).json({ msg: 'Token is not valid.' });
+        }
     } catch (e) {
         res.status(400).json({ msg: 'Token is not valid.' });
     }
