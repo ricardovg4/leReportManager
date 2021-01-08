@@ -78,6 +78,7 @@ const Table = (props) => {
         if (resetPaginationOnUpdate) {
             resetPagination();
         }
+        console.log(response.length);
         const sorted = sortRowsData(response);
         setRowsData(sorted);
     };
