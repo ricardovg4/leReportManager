@@ -42,8 +42,12 @@ const CreateReportRow = (props) => {
             setQuery(resetQuery);
             return true;
         }
-        alert("couldn't post row request, please check your internet connection");
-        return false;
+        if (!res) {
+            alert(
+                "couldn't post row request, check your internet connection or save your work and re-login"
+            );
+            return false;
+        }
     };
 
     // Must check for: phone, email, reference number

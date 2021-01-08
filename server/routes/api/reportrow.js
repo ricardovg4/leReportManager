@@ -97,13 +97,17 @@ router.get('/:username/:id', async (req, res) => {
     const username = req.params.username;
     const Reportrow = userReportrowModel(username);
     const id = req.params.id;
-    Reportrow.findById(id)
-        .then((row) => {
-            res.status(200).json(row);
-        })
-        .catch((e) => {
-            res.status(400).json({ msg: "couldn't find document" });
-        });
+    try {
+        Reportrow.findById(id)
+            .then((row) => {
+                res.status(200).json(row);
+            })
+            .catch((e) => {
+                res.status(400).json({ msg: "couldn't find document" });
+            });
+    } catch (error) {
+        res.status(400).json({ msg: error });
+    }
 });
 
 // update one, put

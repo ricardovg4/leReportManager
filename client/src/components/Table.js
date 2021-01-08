@@ -109,7 +109,9 @@ const Table = (props) => {
                 setEditRow(rowData);
                 setEditModal('is-active');
             } catch (error) {
-                alert("couldn't find row, please check your internet connection");
+                alert(
+                    "couldn't get row request, check your internet connection or save your work and re-login"
+                );
             }
         }
         if (action === 'delete') {
@@ -143,6 +145,9 @@ const Table = (props) => {
             })
             .catch((e) => {
                 console.log(e);
+                alert(
+                    "couldn't update repowrt row request, please check you internet connection or save your work and re-login"
+                );
             });
     };
 
@@ -199,7 +204,9 @@ const Table = (props) => {
                 updateRows();
             }
         } catch (error) {
-            alert("couldn't delete row, please check your internet connection");
+            alert(
+                "couldn't delete row request, check your internet connection or save your work and re-login"
+            );
         }
     };
 
