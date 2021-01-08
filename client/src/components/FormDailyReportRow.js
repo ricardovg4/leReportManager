@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 const FormDailyReport = (props) => {
     // Form state
+    const [country, setCountry] = useState('');
     const [systemReference, setSystemReference] = useState('Amazon');
     const [referenceNumber, setReferenceNumber] = useState('');
     const [issue, setIssue] = useState('');
@@ -105,6 +106,7 @@ const FormDailyReport = (props) => {
     const row = {
         // date: toIsoString(new Date()),
         date: new Date(),
+        ...(country && { country }),
         ...(issue && { issue }),
         ...(referenceNumber && {
             systemReferenceNumber: [{ origin: systemReference, number: referenceNumber }]
@@ -134,6 +136,29 @@ const FormDailyReport = (props) => {
     return (
         <form onSubmit={handleSubmitAddOneRow}>
             <div className="container">
+                <FormField label="Country">
+                    <div className="field is-narrow">
+                        <div className="control">
+                            <div className="select is-fullwidth">
+                                <select
+                                    value={country}
+                                    onChange={(e) => {
+                                        setCountry(e.target.value);
+                                    }}
+                                    required
+                                    autoFocus
+                                >
+                                    <option value="us">US</option>
+                                    <option value="ca">CA</option>
+                                    <option value="uk">UK</option>
+                                    <option value="de">DE</option>
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </FormField>
+
                 <FormField label="Source">
                     <div className="field">
                         <div className="control">
@@ -146,7 +171,7 @@ const FormDailyReport = (props) => {
                                 }}
                                 placeholder="Case's source"
                                 required
-                                autoFocus
+                                // autoFocus
                                 disabled={props.role === 'ct reviewer'}
                             />
                         </div>

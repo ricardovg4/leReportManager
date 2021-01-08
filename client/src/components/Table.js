@@ -326,6 +326,32 @@ const Table = (props) => {
                 <div className="level-left"></div>
                 <div className="level-right" style={{ width: '100%' }}>
                     <div className="level-item">
+                        <p className="subtitle is-6">Country</p>
+                    </div>
+                    <div className="level-item">
+                        <div className="field has-addons">
+                            <div className="control">
+                                <span className="select">
+                                    <select
+                                        value={filters.country}
+                                        onChange={(e) => {
+                                            setFilters({
+                                                ...filters,
+                                                country: e.target.value
+                                            });
+                                        }}
+                                    >
+                                        <option value="us">US</option>
+                                        <option value="ca">CA</option>
+                                        <option value="uk">UK</option>
+                                        <option value="de">DE</option>
+                                        <option value=""></option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="level-item">
                         <p className="subtitle is-6">Case status</p>
                     </div>
                     <div className="level-item">

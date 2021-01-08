@@ -19,6 +19,9 @@ async function getReportRows(username, filters) {
         if (filters.caseStatus) {
             query += `caseStatus=${filters.caseStatus}&`;
         }
+        if (filters.country) {
+            query += `country=${filters.country}&`;
+        }
         if (filters.date && filters.date.startDate && filters.date.endDate) {
             query += `startDate=${filters.date.startDate}&`;
             query += `endDate=${filters.date.endDate}&`;

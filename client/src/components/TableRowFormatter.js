@@ -80,6 +80,10 @@ const TableRowFormatter = (props) => {
                             // }
                             break;
 
+                        case 'country':
+                            cell = String(row[key]).toUpperCase();
+                            break;
+
                         // Default as string
                         default:
                             cell = String(row[key]);
