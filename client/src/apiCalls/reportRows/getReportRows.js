@@ -38,7 +38,7 @@ async function getReportRows(username, filters) {
         if (error.response) {
             console.log(error.response.data); // => the response payload
         }
-        return false;
+        throw new Error(error);
     }
 }
 

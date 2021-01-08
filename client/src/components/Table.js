@@ -64,7 +64,9 @@ const Table = (props) => {
         try {
             response = await getReportRows(props.user, query);
         } catch (error) {
-            console.log(error);
+            alert(
+                "couldn't update report row request, please check you internet connection or save your work and re-login"
+            );
         }
         // if query returns false
         if (!response) {
@@ -106,8 +108,15 @@ const Table = (props) => {
         if (action === 'edit') {
             try {
                 const rowData = await getReportRowById(props.user, rowId);
-                setEditRow(rowData);
-                setEditModal('is-active');
+                if (rowData) {
+                    setEditRow(rowData);
+                    setEditModal('is-active');
+                }
+                if (!rowData) {
+                    alert(
+                        "couldn't get row request, check your internet connection or save your work and re-login"
+                    );
+                }
             } catch (error) {
                 alert(
                     "couldn't get row request, check your internet connection or save your work and re-login"
@@ -138,7 +147,13 @@ const Table = (props) => {
 
     const handleUpdateOneRow = (row, id) => {
         updateReportRowById(props.user, id, row)
-            .then(() => {
+            .then((res) => {
+                if (!res) {
+                    alert(
+                        "couldn't update repowrt row request, please check you internet connection or save your work and re-login"
+                    );
+                }
+
                 updateRows(filters ? filters : null, false);
                 setEditModal('');
                 setEditRow(null);
@@ -202,6 +217,11 @@ const Table = (props) => {
                 alert('row deleted successfully');
                 setDeleteRowId(null);
                 updateRows();
+            }
+            if (!deleteRow) {
+                alert(
+                    "couldn't delete row request, check your internet connection or save your work and re-login"
+                );
             }
         } catch (error) {
             alert(
