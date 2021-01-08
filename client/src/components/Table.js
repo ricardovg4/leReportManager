@@ -26,21 +26,17 @@ const Table = (props) => {
     const [rowsData, setRowsData] = useState(null);
     const [numberOfRows, setNumberOfRows] = useState(10);
     const [rowsToRender, setRowsToRender] = useState(null);
-    // const [filters, setFilters] = useState({
-    //     date: null,
-    //     caseStatus: '',
-    //     email: null,
-    //     phone: null
-    // });
-    const [filters, setFilters] = useState(resetFilters);
     const [editModal, setEditModal] = useState('');
     const [editRow, setEditRow] = useState(null);
     const [cancelModal, setCancelModal] = useState('');
     const [deleteRowId, setDeleteRowId] = useState(null);
+    const [timezone, setTimezone] = useState(null);
+
+    const [filters, setFilters] = useState(resetFilters);
+    // Needed to be separate so the filter search is not triggered on event change
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [referenceNumber, setReferenceNumber] = useState('');
-    const [timezone, setTimezone] = useState(null);
 
     // Context
     const [
@@ -286,10 +282,6 @@ const Table = (props) => {
         }
     }, [rowsData, numberOfRows, currentPage, filters]);
 
-    // useEffect(() => {
-    //     console.log(rowsToRender);
-    // }, [rowsToRender]);
-
     // reset pagination back to 1 when a date filter is applied
     useEffect(() => {
         if (rowsData && filters.date) {
@@ -386,8 +378,7 @@ const Table = (props) => {
                                 e.preventDefault();
 
                                 setFilters({
-                                    ...filters,
-                                    referenceNumber
+                                    ...filters
                                 });
                             }}
                         >
