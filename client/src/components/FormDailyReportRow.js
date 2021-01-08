@@ -37,6 +37,9 @@ const FormDailyReport = (props) => {
             if (rowData.issue) {
                 setIssue(rowData.issue);
             }
+            if (rowData.country) {
+                setCountry(rowData.country);
+            }
             if (rowData.customerName) {
                 setName(rowData.customerName);
             }
