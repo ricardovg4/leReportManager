@@ -46,6 +46,7 @@ const BulmaCalendar = (props) => {
             'datetimepicker-clear-button'
         );
         clearButton[0].addEventListener('click', () => {
+            setDate({ startDate: null, endDate: null });
             props.setdatefilters(null, null);
         });
         // change color of today's button
@@ -57,6 +58,7 @@ const BulmaCalendar = (props) => {
         let clear = document.getElementsByClassName('datetimepicker-footer')[0]
             .children[2];
         clear.addEventListener('click', (e) => {
+            setDate({ startDate: null, endDate: null });
             props.setdatefilters(null, null);
         });
 
