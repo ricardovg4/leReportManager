@@ -23,6 +23,7 @@ router.get('/:username', (req, res) => {
         customerPhone,
         caseStatus,
         country,
+        follower,
         startDate,
         endDate
     } = req.query;
@@ -37,6 +38,7 @@ router.get('/:username', (req, res) => {
         ...(customerPhone ? { customerPhone } : null),
         ...(caseStatus ? { caseStatus } : null),
         ...(country ? { country } : null),
+        ...(follower ? { follower } : null),
         ...(startDate && endDate
             ? { date: { $gte: new Date(startDate), $lte: new Date(endDate) } }
             : null)

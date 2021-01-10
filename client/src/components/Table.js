@@ -20,7 +20,8 @@ const Table = (props) => {
         caseStatus: '',
         email: null,
         phone: null,
-        referenceNumber: null
+        referenceNumber: null,
+        follower: null
     };
 
     const resetAllFilters = () => {
@@ -28,6 +29,7 @@ const Table = (props) => {
         setEmail('');
         setPhone('');
         setReferenceNumber('');
+        setFollower('');
     };
 
     const [rowsData, setRowsData] = useState(null);
@@ -41,6 +43,7 @@ const Table = (props) => {
 
     const [filters, setFilters] = useState(resetFilters);
     // Needed to be separate so the filter search is not triggered on event change
+    const [follower, setFollower] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [referenceNumber, setReferenceNumber] = useState('');
@@ -341,7 +344,31 @@ const Table = (props) => {
                 <div className="level-left"></div>
                 <div className="level-right" style={{ width: '100%' }}>
                     <div className="level-item">
-                        <p className="subtitle is-6">Country</p>
+                        <p className="subtitle is-6">Follower</p>
+                    </div>
+                    <div className="level-item">
+                        <div className="field">
+                            <div className="control">
+                                <input
+                                    style={{ width: '100px' }}
+                                    className="input"
+                                    placeholder="Follower"
+                                    value={follower}
+                                    onChange={(e) => {
+                                        setFollower(e.target.value);
+                                    }}
+                                    onBlur={(e) => {
+                                        setFilters({
+                                            ...filters,
+                                            follower
+                                        });
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="level-item">
+                        <p className="subtitle is-6">Ctry</p>
                     </div>
                     <div className="level-item">
                         <div className="field has-addons">
