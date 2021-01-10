@@ -134,8 +134,8 @@ const FormDailyReport = (props) => {
             //     // clearState();
             // console.log(row.date);
             // console.log(new Date());
-            console.log(row);
-            // props.handleonerow(row, props.rowData ? props.rowData._id : null);
+            // console.log(row);
+            props.handleonerow(row, props.rowData ? props.rowData._id : null);
         }
     };
 
