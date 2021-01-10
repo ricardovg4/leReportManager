@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 const FormDailyReport = (props) => {
     // Form state
-    const [country, setCountry] = useState();
+    const [country, setCountry] = useState('us');
     const [systemReference, setSystemReference] = useState('Amazon');
     const [referenceNumber, setReferenceNumber] = useState('');
     const [issue, setIssue] = useState('');

@@ -23,6 +23,13 @@ const Table = (props) => {
         referenceNumber: null
     };
 
+    const resetAllFilters = () => {
+        setFilters(resetFilters);
+        setEmail('');
+        setPhone('');
+        setReferenceNumber('');
+    };
+
     const [rowsData, setRowsData] = useState(null);
     const [numberOfRows, setNumberOfRows] = useState(10);
     const [rowsToRender, setRowsToRender] = useState(null);
@@ -263,7 +270,8 @@ const Table = (props) => {
     };
 
     useEffect(() => {
-        setFilters(resetFilters);
+        // setFilters(resetFilters);
+        resetAllFilters();
         updateRows();
     }, [rowsDataUpdate]);
 
@@ -301,6 +309,15 @@ const Table = (props) => {
                 <div className="level-left">
                     <div className="level-item">
                         <p className="title is-6">Filters: </p>
+                    </div>
+                    <div className="level-item mx-4"></div>
+                    <div className="level-item">
+                        <button
+                            className="button is-danger is-small is-light"
+                            onClick={() => resetAllFilters()}
+                        >
+                            Reset filters
+                        </button>
                     </div>
                 </div>
                 <div className="level-right">
