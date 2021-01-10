@@ -83,6 +83,12 @@ const TableRowFormatter = (props) => {
                         case 'country':
                             cell = String(row[key]).toUpperCase();
                             break;
+                        case 'follower':
+                            const str = String(row[key]);
+                            const followerUsername =
+                                str.charAt(0).toUpperCase() + str.slice(1);
+                            cell = followerUsername;
+                            break;
 
                         // Default as string
                         default:

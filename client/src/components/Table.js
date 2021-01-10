@@ -361,7 +361,7 @@ const Table = (props) => {
                                     onBlur={(e) => {
                                         setFilters({
                                             ...filters,
-                                            follower
+                                            follower: follower.toLowerCase()
                                         });
                                     }}
                                 />
