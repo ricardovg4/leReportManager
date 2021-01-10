@@ -306,6 +306,7 @@ const Table = (props) => {
     }, [filters]);
 
     useEffect(() => {
+        resetAllFilters();
         updateRows();
         // Update the rows when the user in props has changed
     }, [props.user]);
