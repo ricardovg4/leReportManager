@@ -124,7 +124,7 @@ const FormDailyReport = (props) => {
         ...(response && { response: response.trim() }),
         ...(requestToCt && { requestToCt: requestToCt.trim() }),
         ...(caseStatus && { caseStatus }),
-        ...(follower && { follower: follower.trim() }),
+        ...(follower && { follower: follower.trim().toLowerCase() }),
         ...(solution && { solution: solution.trim() })
     };
 
