@@ -13,7 +13,9 @@ const Pagination = (props) => {
         lastPageAvailable,
         setLastPageAvailable,
         paginationList,
-        setPaginationList
+        setPaginationList,
+        rowsFound,
+        setRowsFound
     ] = useContext(PaginationContext);
 
     const changePagination = (direction) => {
@@ -108,6 +110,13 @@ const Pagination = (props) => {
                         </li>
                     );
                 })}
+                <p className="has-text-info is-size-7" style={{ margin: 'auto' }}>
+                    {/* {`Found ${rowsFound} results.`} */}
+                    Found <span className="has-text-weight-semibold">
+                        {rowsFound}
+                    </span>{' '}
+                    results.
+                </p>
             </ul>
         </nav>
     );

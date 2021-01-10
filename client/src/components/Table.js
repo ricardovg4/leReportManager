@@ -52,7 +52,9 @@ const Table = (props) => {
         lastPageAvailable,
         setLastPageAvailable,
         paginationList,
-        setPaginationList
+        setPaginationList,
+        rowsFound,
+        setRowsFound
     ] = useContext(PaginationContext);
     const [rowsDataUpdate, setRowsDataUpdate] = useContext(RowsDataUpdateContext);
 
@@ -74,6 +76,7 @@ const Table = (props) => {
         // if query returns false
         if (!response) {
             setRowsData(null);
+            setRowsFound(0);
             // alert('No items found');
             return false;
         }
@@ -83,6 +86,7 @@ const Table = (props) => {
         }
         // console.log(response.length);
         // console.log(filters);
+        setRowsFound(response.length);
         const sorted = sortRowsData(response);
         setRowsData(sorted);
     };
