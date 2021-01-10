@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 const FormDailyReport = (props) => {
     // Form state
-    const [country, setCountry] = useState('');
+    const [country, setCountry] = useState();
     const [systemReference, setSystemReference] = useState('Amazon');
     const [referenceNumber, setReferenceNumber] = useState('');
     const [issue, setIssue] = useState('');
@@ -110,20 +110,22 @@ const FormDailyReport = (props) => {
         // date: toIsoString(new Date()),
         date: new Date(),
         ...(country && { country }),
-        ...(issue && { issue }),
+        ...(issue && { issue: issue.trim() }),
         ...(referenceNumber && {
-            systemReferenceNumber: [{ origin: systemReference, number: referenceNumber }]
+            systemReferenceNumber: [
+                { origin: systemReference, number: referenceNumber.trim() }
+            ]
         }),
-        ...(name && { customerName: name }),
-        ...(phone && { customerPhone: phone }),
-        ...(email && { customerEmail: email }),
-        ...(source && { source }),
+        ...(name && { customerName: name.trim() }),
+        ...(phone && { customerPhone: phone.trim() }),
+        ...(email && { customerEmail: email.trim() }),
+        ...(source && { source: source.trim() }),
         // ...(responseMethod && { responseMethod }),
-        ...(response && { response }),
-        ...(requestToCt && { requestToCt }),
+        ...(response && { response: response.trim() }),
+        ...(requestToCt && { requestToCt: requestToCt.trim() }),
         ...(caseStatus && { caseStatus }),
-        ...(follower && { follower }),
-        ...(solution && { solution })
+        ...(follower && { follower: follower.trim() }),
+        ...(solution && { solution: solution.trim() })
     };
 
     const handleSubmitAddOneRow = async (e) => {
@@ -132,7 +134,8 @@ const FormDailyReport = (props) => {
             //     // clearState();
             // console.log(row.date);
             // console.log(new Date());
-            props.handleonerow(row, props.rowData ? props.rowData._id : null);
+            console.log(row);
+            // props.handleonerow(row, props.rowData ? props.rowData._id : null);
         }
     };
 
@@ -155,7 +158,7 @@ const FormDailyReport = (props) => {
                                     <option value="ca">CA</option>
                                     <option value="uk">UK</option>
                                     <option value="de">DE</option>
-                                    <option value=""></option>
+                                    {/* <option value=""></option> */}
                                 </select>
                             </div>
                         </div>
