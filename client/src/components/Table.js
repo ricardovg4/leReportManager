@@ -41,6 +41,7 @@ const Table = (props) => {
     const [deleteRowId, setDeleteRowId] = useState(null);
     const [timezone, setTimezone] = useState(null);
 
+    const [showFilters, setShowFilters] = useState(true);
     const [filters, setFilters] = useState(resetFilters);
     // Needed to be separate so the filter search is not triggered on event change
     const [follower, setFollower] = useState('');
@@ -313,195 +314,282 @@ const Table = (props) => {
 
     return (
         <div>
-            <div className="level">
-                <div className="level-left">
-                    <div className="level-item">
-                        <p className="title is-6">Filters: </p>
-                    </div>
-                    <div className="level-item mx-4"></div>
-                    <div className="level-item">
-                        <button
-                            className="button is-danger is-small is-light"
-                            onClick={() => resetAllFilters()}
-                        >
-                            Reset filters
-                        </button>
-                    </div>
-                </div>
-                <div className="level-right">
-                    <div className="level-item">
-                        <p className="subtitle is-6">Date</p>
-                    </div>
-                    <div className="level-item">
-                        <BulmaCalendar
-                            setdatefilters={setDateFilters}
-                            handletimezone={handleTimezone}
-                        />
+            {!showFilters ? (
+                <div className="level">
+                    <div className="level-left">
+                        <div className="level-item">
+                            <button
+                                onClick={() => {
+                                    setShowFilters(!showFilters);
+                                }}
+                                className="button is-info"
+                            >
+                                Filters
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div className="level mb-2">
-                <div className="level-left"></div>
-                <div className="level-right" style={{ width: '100%' }}>
-                    <div className="level-item">
-                        <p className="subtitle is-6">Follower</p>
-                    </div>
-                    <div className="level-item">
-                        <div className="field">
-                            <div className="control">
-                                <input
-                                    style={{ width: '100px' }}
-                                    className="input"
-                                    placeholder="Follower"
-                                    value={follower}
-                                    onChange={(e) => {
-                                        setFollower(e.target.value);
+            ) : (
+                <div className="filter">
+                    <div className="level">
+                        <div className="level-left">
+                            <div className="level-item">
+                                {/* <p className="title is-6">Filters: </p> */}
+                                <button
+                                    onClick={() => {
+                                        setShowFilters(!showFilters);
                                     }}
-                                    onBlur={(e) => {
-                                        setFilters({
-                                            ...filters,
-                                            follower: follower.toLowerCase()
-                                        });
-                                    }}
+                                    className="button is-info is-light"
+                                >
+                                    Filters:
+                                </button>
+                            </div>
+                            <div className="level-item mx-4"></div>
+                            <div className="level-item">
+                                <button
+                                    className="button is-danger is-small is-light"
+                                    onClick={() => resetAllFilters()}
+                                >
+                                    Reset filters
+                                </button>
+                            </div>
+                        </div>
+                        <div className="level-right">
+                            <div className="level-item">
+                                <p className="subtitle is-6">Date</p>
+                            </div>
+                            <div className="level-item">
+                                <BulmaCalendar
+                                    setdatefilters={setDateFilters}
+                                    handletimezone={handleTimezone}
                                 />
                             </div>
                         </div>
                     </div>
-                    <div className="level-item">
-                        <p className="subtitle is-6">Ctry</p>
-                    </div>
-                    <div className="level-item">
-                        <div className="field has-addons">
-                            <div className="control">
-                                <span className="select">
-                                    <select
-                                        value={filters.country}
-                                        onChange={(e) => {
-                                            setFilters({
-                                                ...filters,
-                                                country: e.target.value
-                                            });
-                                        }}
-                                    >
-                                        <option value="us">US</option>
-                                        <option value="ca">CA</option>
-                                        <option value="uk">UK</option>
-                                        <option value="de">DE</option>
-                                        <option value=""></option>
-                                    </select>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="level-item">
-                        <p className="subtitle is-6">Case status</p>
-                    </div>
-                    <div className="level-item">
-                        <div className="field has-addons">
-                            <div className="control">
-                                <span className="select">
-                                    <select
-                                        value={filters.caseStatus}
-                                        onChange={(e) => {
-                                            setFilters({
-                                                ...filters,
-                                                caseStatus: e.target.value
-                                            });
-                                        }}
-                                    >
-                                        <option value="pending">Pending</option>
-                                        <option value="waiting for cs answer">
-                                            Waiting for cs answer
-                                        </option>
-                                        <option value="solved">Solved</option>
-                                        <option value=""></option>
-                                    </select>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="level-item">
-                        <form
-                            onSubmit={(e) => {
-                                e.preventDefault();
 
-                                setFilters({
-                                    ...filters
-                                });
-                            }}
-                        >
-                            <div className="field is-horizontal">
-                                <div className="control">
-                                    <input
-                                        className="input"
-                                        placeholder="Order number"
-                                        value={referenceNumber}
-                                        onChange={(e) => {
-                                            setReferenceNumber(e.target.value);
-                                        }}
-                                        onBlur={(e) => {
-                                            setFilters({
-                                                ...filters,
-                                                referenceNumber
-                                            });
-                                        }}
-                                    />
+                    <div className="level">
+                        <div className="level-left">
+                            <div className="level-item"></div>
+                        </div>
+                        <div className="level-right">
+                            <div className="level-item">
+                                <p className="subtitle is-6">Follower</p>
+                            </div>
+                            <div className="level-item">
+                                <div className="field">
+                                    <div className="control">
+                                        <input
+                                            style={{ width: '100px' }}
+                                            className="input"
+                                            placeholder="Follower"
+                                            value={follower}
+                                            onChange={(e) => {
+                                                setFollower(e.target.value);
+                                            }}
+                                            onBlur={(e) => {
+                                                setFilters({
+                                                    ...filters,
+                                                    follower: follower.toLowerCase()
+                                                });
+                                            }}
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                        </form>
+                            <div className="level-item">
+                                <p className="subtitle is-6">Ctry</p>
+                            </div>
+                            <div className="level-item">
+                                <div className="field has-addons">
+                                    <div className="control">
+                                        <span className="select">
+                                            <select
+                                                value={filters.country}
+                                                onChange={(e) => {
+                                                    setFilters({
+                                                        ...filters,
+                                                        country: e.target.value
+                                                    });
+                                                }}
+                                            >
+                                                <option value="us">US</option>
+                                                <option value="ca">CA</option>
+                                                <option value="uk">UK</option>
+                                                <option value="de">DE</option>
+                                                <option value=""></option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="level-item">
-                        <form>
-                            <div className="field has-addons is-horizontal">
-                                <div className="control">
-                                    <input
-                                        className="input"
-                                        placeholder="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        onBlur={(e) => {
-                                            setFilters({
-                                                ...filters,
-                                                email: email
-                                            });
-                                        }}
-                                    />
-                                </div>
-                                <div className="control">
-                                    <input
-                                        className="input"
-                                        placeholder="phone"
-                                        value={phone}
-                                        onChange={(e) => setPhone(e.target.value)}
-                                        onBlur={(e) => {
-                                            setFilters({
-                                                ...filters,
-                                                phone: phone
-                                            });
-                                        }}
-                                    />
-                                </div>
-                                <div className="control">
-                                    <button
-                                        className="button is-info "
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            setFilters({
-                                                ...filters,
-                                                email: email,
-                                                phone: phone
-                                            });
-                                        }}
-                                    >
-                                        Search
-                                    </button>
+
+                    <div className="level mb-2">
+                        <div className="level-left"></div>
+                        <div className="level-right" style={{ width: '100%' }}>
+                            {/* <div className="level-item">
+                                <p className="subtitle is-6">Follower</p>
+                            </div>
+                            <div className="level-item">
+                                <div className="field">
+                                    <div className="control">
+                                        <input
+                                            style={{ width: '100px' }}
+                                            className="input"
+                                            placeholder="Follower"
+                                            value={follower}
+                                            onChange={(e) => {
+                                                setFollower(e.target.value);
+                                            }}
+                                            onBlur={(e) => {
+                                                setFilters({
+                                                    ...filters,
+                                                    follower: follower.toLowerCase()
+                                                });
+                                            }}
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                        </form>
+                            <div className="level-item">
+                                <p className="subtitle is-6">Ctry</p>
+                            </div>
+                            <div className="level-item">
+                                <div className="field has-addons">
+                                    <div className="control">
+                                        <span className="select">
+                                            <select
+                                                value={filters.country}
+                                                onChange={(e) => {
+                                                    setFilters({
+                                                        ...filters,
+                                                        country: e.target.value
+                                                    });
+                                                }}
+                                            >
+                                                <option value="us">US</option>
+                                                <option value="ca">CA</option>
+                                                <option value="uk">UK</option>
+                                                <option value="de">DE</option>
+                                                <option value=""></option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div> */}
+                            <div className="level-item">
+                                <p className="subtitle is-6">Case status</p>
+                            </div>
+                            <div className="level-item">
+                                <div className="field has-addons">
+                                    <div className="control">
+                                        <span className="select">
+                                            <select
+                                                value={filters.caseStatus}
+                                                onChange={(e) => {
+                                                    setFilters({
+                                                        ...filters,
+                                                        caseStatus: e.target.value
+                                                    });
+                                                }}
+                                            >
+                                                <option value="pending">Pending</option>
+                                                <option value="waiting for cs answer">
+                                                    Waiting for cs answer
+                                                </option>
+                                                <option value="solved">Solved</option>
+                                                <option value=""></option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="level-item">
+                                <form
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+
+                                        setFilters({
+                                            ...filters
+                                        });
+                                    }}
+                                >
+                                    <div className="field is-horizontal">
+                                        <div className="control">
+                                            <input
+                                                className="input"
+                                                placeholder="Order number"
+                                                value={referenceNumber}
+                                                onChange={(e) => {
+                                                    setReferenceNumber(e.target.value);
+                                                }}
+                                                onBlur={(e) => {
+                                                    setFilters({
+                                                        ...filters,
+                                                        referenceNumber
+                                                    });
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div className="level-item">
+                                {/* <form> */}
+                                <div className="field has-addons">
+                                    <div className="control">
+                                        <input
+                                            className="input"
+                                            placeholder="email"
+                                            style={{ width: '180px' }}
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            onBlur={(e) => {
+                                                setFilters({
+                                                    ...filters,
+                                                    email: email
+                                                });
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="control">
+                                        <input
+                                            className="input"
+                                            placeholder="phone"
+                                            style={{ width: '150px' }}
+                                            value={phone}
+                                            onChange={(e) => setPhone(e.target.value)}
+                                            onBlur={(e) => {
+                                                setFilters({
+                                                    ...filters,
+                                                    phone: phone
+                                                });
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="control">
+                                        <button
+                                            className="button is-info "
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setFilters({
+                                                    ...filters,
+                                                    email: email,
+                                                    phone: phone
+                                                });
+                                            }}
+                                        >
+                                            Search
+                                        </button>
+                                    </div>
+                                </div>
+                                {/* </form> */}
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
             <hr />
             <div
                 className="table-container"
