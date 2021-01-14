@@ -89,7 +89,7 @@ router.post('/:username', async (req, res) => {
             .save()
             .then(() => {
                 console.log('row registered');
-                console.log({ ...req.body });
+                // console.log({ ...req.body });
                 res.status(200).json({ msg: 'row entered successfully.' });
             })
             .catch((e) => {
@@ -102,8 +102,8 @@ router.post('/:username', async (req, res) => {
 
 // find one, get
 router.get('/:username/:id', async (req, res) => {
-    console.log(req.params);
-    console.log(req.query);
+    // console.log(req.params);
+    // console.log(req.query);
     const username = req.params.username;
     const Reportrow = userReportrowModel(username);
     const id = req.params.id;
@@ -129,7 +129,7 @@ router.put('/:username/:id', async (req, res) => {
     if (updatedRow.date) {
         delete updatedRow.date;
     }
-    console.log(updatedRow);
+    // console.log(updatedRow);
     Reportrow.findByIdAndUpdate(id, updatedRow)
         .then(() => {
             res.status(200).json({ msg: `${id} updated` });

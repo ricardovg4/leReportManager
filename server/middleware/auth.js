@@ -20,7 +20,7 @@ const auth = async (req, res, next) => {
         if (decoded) {
             const user = await User.findById(decoded.id);
             if (user) {
-                console.log('authenticated');
+                console.log('authenticated: ', user.username);
                 // Set user variable for next middleware
                 const { username, role, reportPermissions } = user;
                 const userObject = { username, role, reportPermissions };
