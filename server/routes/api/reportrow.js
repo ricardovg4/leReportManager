@@ -19,6 +19,8 @@ router.get('/:username', (req, res) => {
     const {
         systemReferenceNumber,
         systemReferenceOrigin,
+        systemReferenceNumber2,
+        systemReferenceOrigin2,
         customerEmail,
         customerPhone,
         caseStatus,
@@ -27,12 +29,29 @@ router.get('/:username', (req, res) => {
         startDate,
         endDate
     } = req.query;
+    const referenceArray = [];
+    if (systemReferenceNumber) {
+        referenceArray.push(systemReferenceNumber);
+    }
+    if (systemReferenceNumber2) {
+        referenceArray.push(systemReferenceNumber2);
+    }
+    // console.log(referenceArray);
     const query = {
-        ...(systemReferenceNumber
-            ? { 'systemReferenceNumber.number': systemReferenceNumber }
-            : null),
-        ...(systemReferenceOrigin
-            ? { 'systemReferenceNumber.origin': systemReferenceOrigin }
+        // ...(systemReferenceNumber
+        //     ? { 'systemReferenceNumber.number': systemReferenceNumber }
+        //     : null),
+        // ...(systemReferenceOrigin
+        //     ? { 'systemReferenceNumber.origin': systemReferenceOrigin }
+        //     : null),
+        // ...(systemReferenceNumber2
+        //     ? { 'systemReferenceNumber.number': systemReferenceNumber2 }
+        //     : null),
+        // ...(systemReferenceOrigin2
+        //     ? { 'systemReferenceNumber.origin': systemReferenceOrigin2 }
+        //     : null),
+        ...(referenceArray.length > 0
+            ? { 'systemReferenceNumber.number': { $in: referenceArray } }
             : null),
         ...(customerEmail ? { customerEmail } : null),
         ...(customerPhone ? { customerPhone } : null),
@@ -43,7 +62,7 @@ router.get('/:username', (req, res) => {
             ? { date: { $gte: new Date(startDate), $lte: new Date(endDate) } }
             : null)
     };
-    console.log(query);
+    // console.log(query);
     Reportrow.find({ ...query })
         // exclude fields form response
         .select('-createdAt -updatedAt -__v')
@@ -57,26 +76,12 @@ router.get('/:username', (req, res) => {
 
 // create one, post
 router.post('/:username', async (req, res) => {
-    const {
-        issue,
-        customerName,
-        customerPhone,
-        customerEmail,
-        source,
-        // responseMethod,
-        response,
-        comments,
-        requestToCt,
-        caseStatus,
-        follower,
-        solution
-    } = req.body;
+    const { issue, source, caseStatus } = req.body;
     if (!issue || !source || !caseStatus) {
-        return res
-            .status(400)
-            .json({ msg: `Please enter all required fields.${missing}` });
+        return res.status(400).json({ msg: `Please enter all required fields.` });
     }
     try {
+        // console.log('server', req.body);
         const username = req.params.username;
         const Reportrow = userReportrowModel(username);
         const newReportrow = new Reportrow({ ...req.body });
@@ -84,6 +89,7 @@ router.post('/:username', async (req, res) => {
             .save()
             .then(() => {
                 console.log('row registered');
+                console.log({ ...req.body });
                 res.status(200).json({ msg: 'row entered successfully.' });
             })
             .catch((e) => {
@@ -123,6 +129,7 @@ router.put('/:username/:id', async (req, res) => {
     if (updatedRow.date) {
         delete updatedRow.date;
     }
+    console.log(updatedRow);
     Reportrow.findByIdAndUpdate(id, updatedRow)
         .then(() => {
             res.status(200).json({ msg: `${id} updated` });

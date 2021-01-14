@@ -15,14 +15,16 @@ const CreateReportRow = (props) => {
     const [query, setQuery] = useState({
         email: null,
         phone: null,
-        referenceNumber: null
+        referenceNumber: null,
+        referenceNumber2: null
     });
     const [rowsMatch, setRowsMatch] = useState(null);
 
     const resetQuery = {
         email: null,
         phone: null,
-        referenceNumber: null
+        referenceNumber: null,
+        referenceNumber2: null
     };
 
     // Context
@@ -50,7 +52,7 @@ const CreateReportRow = (props) => {
         }
     };
 
-    // Must check for: phone, email, reference number
+    // Must check for: phone, email, reference numbers
     // blur handler for form
     const handleOnBlur = (queryFromForm) => {
         // console.log(queryFromForm);
@@ -67,7 +69,12 @@ const CreateReportRow = (props) => {
     };
     useEffect(() => {
         // console.log(query);
-        if (query.email || query.phone || query.referenceNumber) {
+        if (
+            query.email ||
+            query.phone ||
+            query.referenceNumber ||
+            query.referenceNumber2
+        ) {
             const getPostFiltered = async () => {
                 const rowsMatching = await getReportRows(props.user, query);
                 setRowsMatch(rowsMatching);

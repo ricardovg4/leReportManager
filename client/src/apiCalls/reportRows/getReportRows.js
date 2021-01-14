@@ -16,6 +16,14 @@ async function getReportRows(username, filters) {
         if (filters.referenceNumber) {
             query += `systemReferenceNumber=${filters.referenceNumber}&`;
         }
+        // Reference 2
+        if (filters.systemReference2) {
+            query += `systemReferenceOrigin2=${filters.systemReference2}&`;
+        }
+        if (filters.referenceNumber2) {
+            query += `systemReferenceNumber2=${filters.referenceNumber2}&`;
+        }
+
         if (filters.caseStatus) {
             query += `caseStatus=${filters.caseStatus}&`;
         }

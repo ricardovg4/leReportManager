@@ -7,6 +7,9 @@ const FormDailyReport = (props) => {
     const [country, setCountry] = useState('us');
     const [systemReference, setSystemReference] = useState('Amazon');
     const [referenceNumber, setReferenceNumber] = useState('');
+    const [showReference2, setShowReference2] = useState(false);
+    const [referenceNumber2, setReferenceNumber2] = useState('');
+    const [systemReference2, setSystemReference2] = useState('Amazon');
     const [issue, setIssue] = useState('');
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
@@ -22,17 +25,23 @@ const FormDailyReport = (props) => {
     // useEffect
     useEffect(() => {
         const rowData = props.rowData;
+        console.log(rowData);
         if (rowData) {
             if (
                 rowData.systemReferenceNumber &&
                 Object.entries(rowData.systemReferenceNumber).length > 0
             ) {
                 setReferenceNumber(rowData.systemReferenceNumber[0].number);
-                const rowOrigin = rowData.systemReferenceNumber[0].origin;
-                if (rowOrigin === 'any') {
-                    rowData.systemReferenceNumber[0].origin = 'Other';
-                }
+                // const rowOrigin = rowData.systemReferenceNumber[0].origin;
+                // if (rowOrigin === 'any') {
+                //     rowData.systemReferenceNumber[0].origin = 'Other';
+                // }
                 setSystemReference(rowData.systemReferenceNumber[0].origin);
+                if (!!rowData.systemReferenceNumber[1]) {
+                    setShowReference2(true);
+                    setReferenceNumber2(rowData.systemReferenceNumber[1].number);
+                    setSystemReference2(rowData.systemReferenceNumber[1].origin);
+                }
             }
             if (rowData.issue) {
                 setIssue(rowData.issue);
@@ -106,15 +115,42 @@ const FormDailyReport = (props) => {
     //     );
     // };
 
+    // const referenceArray = [];
+    // useEffect(() => {
+    //     if (referenceNumber) {
+    //         referenceArray.push({
+    //             origin: systemReference,
+    //             number: referenceNumber.trim()
+    //         });
+    //     }
+    //     if (referenceNumber2) {
+    //         referenceArray.push({
+    //             origin: systemReference2,
+    //             number: referenceNumber2.trim()
+    //         });
+    //     }
+    //     console.log(referenceArray);
+    //     console.log(row);
+    // }, [referenceNumber, referenceNumber2]);
+
     const row = {
         // date: toIsoString(new Date()),
         date: new Date(),
         ...(country && { country }),
         ...(issue && { issue: issue.trim() }),
-        ...(referenceNumber && {
+        ...((referenceNumber || referenceNumber2) && {
+            // systemReferenceNumber: [referenceArray]
             systemReferenceNumber: [
-                { origin: systemReference, number: referenceNumber.trim() }
-            ]
+                // { origin: systemReference, number: referenceNumber.trim() },
+                // { origin: systemReference2, number: referenceNumber2.trim() }
+                systemReference !== 'None' && referenceNumber !== ''
+                    ? { origin: systemReference, number: referenceNumber.trim() }
+                    : undefined,
+                systemReference2 !== 'None' && referenceNumber2 !== ''
+                    ? // systemReference2 !== 'None'
+                      { origin: systemReference2, number: referenceNumber2.trim() }
+                    : undefined
+            ].filter((ele) => ele !== undefined)
         }),
         ...(name && { customerName: name.trim() }),
         ...(phone && { customerPhone: phone.trim() }),
@@ -135,8 +171,14 @@ const FormDailyReport = (props) => {
             // console.log(row.date);
             // console.log(new Date());
             // console.log(row);
+            console.log(row);
             props.handleonerow(row, props.rowData ? props.rowData._id : null);
         }
+    };
+
+    const handleAddReferenceNumber = (e) => {
+        e.preventDefault();
+        setShowReference2(true);
     };
 
     return (
@@ -232,8 +274,74 @@ const FormDailyReport = (props) => {
                                 }
                             />
                         </p>
+                        <button
+                            className="button is-primary is-outlined"
+                            onClick={handleAddReferenceNumber}
+                            type="button"
+                            disabled={
+                                systemReference === 'None'
+                                    ? true
+                                    : false || props.role === 'ct reviewer'
+                            }
+                        >
+                            <span className="icon">
+                                <FontAwesomeIcon
+                                    icon={['fas', 'plus-circle']}
+                                    size="1x"
+                                />
+                            </span>
+                        </button>
                     </div>
                 </FormField>
+
+                {/* 2nd Reference Number */}
+                {!showReference2 ? null : (
+                    <FormField label="">
+                        <div className="field has-addons">
+                            <div className="control">
+                                <span className="select">
+                                    <select
+                                        value={systemReference2}
+                                        onChange={(e) => {
+                                            if (e.target.value === 'None') {
+                                                setReferenceNumber2('');
+                                            }
+                                            setSystemReference2(e.target.value);
+                                        }}
+                                        disabled={props.role === 'ct reviewer'}
+                                    >
+                                        <option value="Magento">Magento</option>
+                                        <option value="Amazon">Amazon</option>
+                                        <option value="Salesforce">Salesforce</option>
+                                        <option value="Other">Other</option>
+                                        <option value="None">None</option>
+                                    </select>
+                                </span>
+                            </div>
+                            <p className="control">
+                                <input
+                                    className="input"
+                                    type="text"
+                                    placeholder="Number"
+                                    value={referenceNumber2}
+                                    onChange={(e) => {
+                                        setReferenceNumber2(e.target.value);
+                                    }}
+                                    disabled={
+                                        systemReference2 === 'None'
+                                            ? true
+                                            : false || props.role === 'ct reviewer'
+                                    }
+                                    onBlur={() =>
+                                        props.handleonblur
+                                            ? props.handleonblur({ referenceNumber2 })
+                                            : null
+                                    }
+                                />
+                            </p>
+                        </div>
+                    </FormField>
+                )}
 
                 <FormField label="Issue">
                     <div className="field">
@@ -436,7 +544,11 @@ const FormDailyReport = (props) => {
                 )}
 
                 <div className="buttons is-right mt-5">
-                    <button className="button is-primary mr-4" id="submit-row-button">
+                    <button
+                        className="button is-primary mr-4"
+                        id="submit-row-button"
+                        type="submit"
+                    >
                         {props.submitButtonName || 'Submit'}
                     </button>
                     <button className="button is-danger" onClick={props.confirmcancelone}>

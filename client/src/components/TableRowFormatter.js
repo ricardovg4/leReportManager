@@ -43,6 +43,7 @@ const TableRowFormatter = (props) => {
                                     `${spacer}${value.origin}: ${value.number}`
                                 );
                             });
+                            // cell = <pre>{JSON.stringify(row[key])}</pre>;
                             break;
 
                         case 'date':
