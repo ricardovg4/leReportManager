@@ -127,16 +127,17 @@ const TableRowFormatter = (props) => {
                         <ButtonIcon
                             icon="edit"
                             classColor="is-primary"
-                            style={{ marginRight: '6px' }}
+                            // style={{ marginRight: '6px' }}
+                            style={{ margin: 'auto' }}
                             onclick={() => props.handleactions(row._id, 'edit')}
                         />
-                        {props.role === 'ct reviewer' ? null : (
+                        {/* {props.role === 'ct reviewer' ? null : (
                             <ButtonIcon
                                 icon="trash"
                                 classColor="is-danger"
                                 onclick={() => props.handleactions(row._id, 'delete')}
                             />
-                        )}
+                        )} */}
                     </div>
                 </td>
             )}

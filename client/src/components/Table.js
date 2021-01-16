@@ -4,7 +4,7 @@ import getReportRows from '../apiCalls/reportRows/getReportRows';
 import BulmaCalendar from './BulmaCalendar';
 import getReportRowById from '../apiCalls/reportRows/getReportRowById';
 import updateReportRowById from '../apiCalls/reportRows/updateReportRowById';
-import deleteReportRowById from '../apiCalls/reportRows/deleteReportRowById';
+// import deleteReportRowById from '../apiCalls/reportRows/deleteReportRowById';
 
 // Context
 import { PaginationContext } from '../context/PaginationContext';
@@ -38,7 +38,7 @@ const Table = (props) => {
     const [editModal, setEditModal] = useState('');
     const [editRow, setEditRow] = useState(null);
     const [cancelModal, setCancelModal] = useState('');
-    const [deleteRowId, setDeleteRowId] = useState(null);
+    // const [deleteRowId, setDeleteRowId] = useState(null);
     const [timezone, setTimezone] = useState(null);
 
     const [showFilters, setShowFilters] = useState(true);
@@ -136,10 +136,10 @@ const Table = (props) => {
                 );
             }
         }
-        if (action === 'delete') {
-            setDeleteRowId(rowId);
-            setCancelModal('is-active');
-        }
+        // if (action === 'delete') {
+        //     setDeleteRowId(rowId);
+        //     setCancelModal('is-active');
+        // }
     };
 
     // Set date filters util for bulma calendar
@@ -222,60 +222,60 @@ const Table = (props) => {
         e.preventDefault();
         setCancelModal('');
     };
-    const handleDeleteRow = async (rowId) => {
-        try {
-            const deleteRow = await deleteReportRowById(props.user, deleteRowId);
-            if (deleteRow) {
-                setCancelModal('');
-                alert('row deleted successfully');
-                setDeleteRowId(null);
-                updateRows();
-            }
-            if (!deleteRow) {
-                alert(
-                    "couldn't delete row request, check your internet connection or save your work and re-login"
-                );
-            }
-        } catch (error) {
-            alert(
-                "couldn't delete row request, check your internet connection or save your work and re-login"
-            );
-        }
-    };
+    // const handleDeleteRow = async (rowId) => {
+    //     try {
+    //         const deleteRow = await deleteReportRowById(props.user, deleteRowId);
+    //         if (deleteRow) {
+    //             setCancelModal('');
+    //             alert('row deleted successfully');
+    //             setDeleteRowId(null);
+    //             updateRows();
+    //         }
+    //         if (!deleteRow) {
+    //             alert(
+    //                 "couldn't delete row request, check your internet connection or save your work and re-login"
+    //             );
+    //         }
+    //     } catch (error) {
+    //         alert(
+    //             "couldn't delete row request, check your internet connection or save your work and re-login"
+    //         );
+    //     }
+    // };
 
-    const ConfirmDeleteModal = () => {
-        return (
-            <div className={`modal ${cancelModal}`}>
-                <div className="modal-background"></div>
-                <div className="modal-card">
-                    <header className="modal-card-head has-background-danger">
-                        <p className="modal-card-title has-text-white">Cancel</p>
-                        <button
-                            className="delete"
-                            aria-label="close"
-                            onClick={handleCancelModal}
-                        ></button>
-                    </header>
-                    <section className="modal-card-body">
-                        <div className="content">
-                            <p>
-                                You are about to delete this row, this cannot be undone.
-                                Are you sure you want to proceed?
-                            </p>
-                        </div>
-                    </section>
-                    <footer className="modal-card-foot">
-                        <button className="button is-danger" onClick={handleDeleteRow}>
-                            Delete row
-                        </button>
-                        <button className="button is-success" onClick={handleCancelModal}>
-                            Go back
-                        </button>
-                    </footer>
-                </div>
-            </div>
-        );
-    };
+    // const ConfirmDeleteModal = () => {
+    //     return (
+    //         <div className={`modal ${cancelModal}`}>
+    //             <div className="modal-background"></div>
+    //             <div className="modal-card">
+    //                 <header className="modal-card-head has-background-danger">
+    //                     <p className="modal-card-title has-text-white">Cancel</p>
+    //                     <button
+    //                         className="delete"
+    //                         aria-label="close"
+    //                         onClick={handleCancelModal}
+    //                     ></button>
+    //                 </header>
+    //                 <section className="modal-card-body">
+    //                     <div className="content">
+    //                         <p>
+    //                             You are about to delete this row, this cannot be undone.
+    //                             Are you sure you want to proceed?
+    //                         </p>
+    //                     </div>
+    //                 </section>
+    //                 <footer className="modal-card-foot">
+    //                     <button className="button is-danger" onClick={handleDeleteRow}>
+    //                         Delete row
+    //                     </button>
+    //                     <button className="button is-success" onClick={handleCancelModal}>
+    //                         Go back
+    //                     </button>
+    //                 </footer>
+    //             </div>
+    //         </div>
+    //     );
+    // };
 
     useEffect(() => {
         // setFilters(resetFilters);
@@ -634,7 +634,7 @@ const Table = (props) => {
             </div>
 
             <RowModal />
-            <ConfirmDeleteModal />
+            {/* <ConfirmDeleteModal /> */}
         </div>
     );
 };
