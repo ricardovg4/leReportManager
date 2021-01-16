@@ -140,18 +140,18 @@ router.put('/:username/:id', async (req, res) => {
 });
 
 // delete one, delete
-router.delete('/:username/:id', (req, res) => {
-    const username = req.params.username;
-    const Reportrow = userReportrowModel(username);
-    const id = req.params.id;
-    Reportrow.findByIdAndDelete(id)
-        .then(() => {
-            res.status(200).json({ msg: `${id} deleted.` });
-        })
-        .catch((e) => {
-            res.status(400).json({ msg: `couldn't delete` });
-        });
-});
+// router.delete('/:username/:id', (req, res) => {
+//     const username = req.params.username;
+//     const Reportrow = userReportrowModel(username);
+//     const id = req.params.id;
+//     Reportrow.findByIdAndDelete(id)
+//         .then(() => {
+//             res.status(200).json({ msg: `${id} deleted.` });
+//         })
+//         .catch((e) => {
+//             res.status(400).json({ msg: `couldn't delete` });
+//         });
+// });
 
 // WARNING
 // router.delete('/deleteall', (req, res) => {
