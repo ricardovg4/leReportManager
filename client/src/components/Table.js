@@ -30,6 +30,12 @@ const Table = (props) => {
         setPhone('');
         setReferenceNumber('');
         setFollower('');
+        try {
+            const clearButton = document.getElementsByClassName(
+                'datetimepicker-clear-button'
+            )[0];
+            clearButton.click();
+        } catch (error) {}
     };
 
     const [rowsData, setRowsData] = useState(null);
@@ -71,7 +77,9 @@ const Table = (props) => {
     const updateRows = async (query, resetPaginationOnUpdate = true) => {
         let response;
         try {
+            // console.trace('waiting');
             response = await getReportRows(props.user, query);
+            // console.log('finished waiting');
         } catch (error) {
             alert(
                 "couldn't update report row request, please check you internet connection or save your work and re-login"
