@@ -649,7 +649,7 @@ const Table = (props) => {
                         )}
                     </tbody>
                 </table>
-                {loading ? <Loading /> : null}
+                {loading ? <Loading fullheight={false} /> : null}
             </div>
 
             <RowModal />

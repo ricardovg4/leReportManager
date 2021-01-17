@@ -1,8 +1,9 @@
 import './styles.css';
-const Loading = () => {
+const Loading = ({ fullheight = true }) => {
+    const height = fullheight ? 'is-fullheight' : '';
     return (
         // is fullheight?
-        <section className="hero">
+        <section className={`hero ${height}`}>
             <div className="hero-body">
                 <div className="container">
                     <div className="lds-ring">
