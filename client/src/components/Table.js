@@ -12,6 +12,7 @@ import { RowsDataUpdateContext } from '../context/RowsDataUpdateContext';
 import TableRowFormatter from './TableRowFormatter';
 import FormDailyReport from './FormDailyReportRow';
 import header from '../apiCalls/reportRows/utils/reportHeader';
+import Loading from '../pages/Loading/Loading';
 
 const Table = (props) => {
     const resetFilters = {
@@ -38,6 +39,7 @@ const Table = (props) => {
         } catch (error) {}
     };
 
+    const [loading, setLoading] = useState(false);
     const [rowsData, setRowsData] = useState(null);
     const [numberOfRows, setNumberOfRows] = useState(10);
     const [rowsToRender, setRowsToRender] = useState(null);
@@ -74,12 +76,20 @@ const Table = (props) => {
     };
 
     // Rows data manipulation and formatting
-    const updateRows = async (query, resetPaginationOnUpdate = true) => {
+    const updateRows = async (
+        query,
+        resetPaginationOnUpdate = true,
+        setRowsDataToNull
+    ) => {
         let response;
+        // Loading state
         try {
-            // console.trace('waiting');
+            if (setRowsDataToNull) {
+                setRowsData(null);
+            }
+            setLoading(true);
             response = await getReportRows(props.user, query);
-            // console.log('finished waiting');
+            setLoading(false);
         } catch (error) {
             alert(
                 "couldn't update report row request, please check you internet connection or save your work and re-login"
@@ -316,7 +326,7 @@ const Table = (props) => {
 
     useEffect(() => {
         resetAllFilters();
-        updateRows();
+        updateRows(undefined, undefined, true);
         // Update the rows when the user in props has changed
     }, [props.user]);
 
@@ -630,7 +640,7 @@ const Table = (props) => {
                                     />
                                 );
                             })
-                        ) : (
+                        ) : loading ? null : (
                             <tr>
                                 <td colSpan="13" className="has-text-centered">
                                     No items found...
@@ -639,6 +649,7 @@ const Table = (props) => {
                         )}
                     </tbody>
                 </table>
+                {loading ? <Loading /> : null}
             </div>
 
             <RowModal />

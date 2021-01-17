@@ -2,7 +2,7 @@ import './styles.css';
 const Loading = () => {
     return (
         // is fullheight?
-        <section className="hero is-fullheight">
+        <section className="hero">
             <div className="hero-body">
                 <div className="container">
                     <div className="lds-ring">
