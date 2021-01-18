@@ -33,8 +33,8 @@ const ping = require('./routes/api/ping');
 app.use('/api/ping', ping);
 
 // register
-const register = require('./routes/api/register');
-app.use('/register', register);
+// const register = require('./routes/api/register');
+// app.use('/register', register);
 
 // login
 const login = require('./routes/api/login');
