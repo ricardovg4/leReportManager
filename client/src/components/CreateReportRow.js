@@ -33,9 +33,11 @@ const CreateReportRow = (props) => {
     const handlePostAddOneRow = async (row) => {
         const button = document.getElementById('submit-row-button');
         button.classList.toggle('is-loading');
+        button.disabled = true;
         const res = await postReportRows(props.user, row);
         if (res) {
             button.classList.toggle('is-loading');
+            button.disabled = false;
             setAddOne(false);
             alert('row entered successfully!');
             setRowsDataUpdate(rowsDataUpdate + 1);

@@ -513,14 +513,31 @@ const FormDailyReport = (props) => {
                     <FormField label="Follower">
                         <div className="field">
                             <div className="control">
-                                <input
+                                <div className="select is-fullwidth">
+                                    <select
+                                        value={follower}
+                                        onChange={(e) => {
+                                            setFollower(e.target.value);
+                                        }}
+                                    >
+                                        <option value="Sabrina">Sabrina</option>
+                                        <option value="Candy">Candy</option>
+                                        <option value="Bella">Bella</option>
+                                        <option value="Steven">Steven</option>
+                                        <option value="Ricardo">Ricardo</option>
+                                        <option value="Sam">Sam</option>
+                                        <option value="Francis">Francis</option>
+                                        <option value="Camillo">Camillo</option>
+                                    </select>
+                                </div>
+                                {/* <input
                                     className="input"
                                     placeholder="Follower"
                                     value={follower}
                                     onChange={(e) => {
                                         setFollower(e.target.value);
                                     }}
-                                ></input>
+                                ></input> */}
                             </div>
                         </div>
                     </FormField>
