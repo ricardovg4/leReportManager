@@ -193,6 +193,7 @@ const FormDailyReport = (props) => {
                                     onChange={(e) => {
                                         setCountry(e.target.value);
                                     }}
+                                    disabled={props.role === 'ct reviewer'}
                                     required
                                     autoFocus
                                 >
@@ -210,7 +211,36 @@ const FormDailyReport = (props) => {
                 <FormField label="Source">
                     <div className="field">
                         <div className="control">
-                            <input
+                            <div className="select">
+                                <select
+                                    value={source}
+                                    onChange={(e) => {
+                                        setSource(e.target.value);
+                                    }}
+                                    disabled={props.role === 'ct reviewer'}
+                                    required
+                                >
+                                    <option value="phone">phone</option>
+                                    <option value="lost calls">lost calls</option>
+                                    <option value="facebook">facebook</option>
+                                    <option value="amazon">amazon</option>
+                                    <option value="salesforce">salesforce</option>
+                                    <option value="ct request">CT request</option>
+                                    {/* needed to check for values that aren't of the above, adds them to option */}
+                                    {row.source &&
+                                    ![
+                                        'phone',
+                                        'lost calls',
+                                        'facebook',
+                                        'amazon',
+                                        'salesforce',
+                                        'ct request'
+                                    ].includes(row.source) ? (
+                                        <option value={row.source}>{row.source}</option>
+                                    ) : null}
+                                </select>
+                            </div>
+                            {/* <input
                                 className="input"
                                 type="text"
                                 value={source}
@@ -221,7 +251,7 @@ const FormDailyReport = (props) => {
                                 required
                                 // autoFocus
                                 disabled={props.role === 'ct reviewer'}
-                            />
+                            /> */}
                         </div>
                     </div>
                 </FormField>
@@ -496,6 +526,9 @@ const FormDailyReport = (props) => {
                                     onChange={(e) => {
                                         setCaseStatus(e.target.value);
                                     }}
+                                    autoFocus={
+                                        props.role === 'ct reviewer' ? true : false
+                                    }
                                     required
                                 >
                                     <option value="solved">Solved</option>
