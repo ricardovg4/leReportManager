@@ -14,7 +14,7 @@ const FormDailyReport = (props) => {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
-    const [source, setSource] = useState('');
+    const [source, setSource] = useState('phone');
     // const [responseMethod, setResponseMethod] = useState('');
     const [response, setResponse] = useState('');
     const [requestToCt, setRequestToCt] = useState('');
