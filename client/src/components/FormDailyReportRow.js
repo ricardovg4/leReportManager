@@ -133,6 +133,30 @@ const FormDailyReport = (props) => {
     //     console.log(row);
     // }, [referenceNumber, referenceNumber2]);
 
+    const countries = {
+        us: ['111', '112', '113', '114', 'GW', '1000'],
+        uk: ['026', '202', '203', '204', '205', '206', 'UK'],
+        de: ['028', '302', '303', '304', '305', '306', 'DE'],
+        ca: ['701', '702']
+    };
+
+    const checkWhichCountry = (string, countries) => {
+        for (const [key, value] of Object.entries(countries)) {
+            let ctry = value.find((str) => string.startsWith(str));
+            if (ctry) {
+                setCountry(key);
+            }
+        }
+        return false;
+    };
+
+    const handleBlurReferenceNumber = (referenceNumberState) => {
+        checkWhichCountry(referenceNumberState, countries);
+        return props.handleonblur
+            ? props.handleonblur({ referenceNumber: referenceNumberState })
+            : null;
+    };
+
     const row = {
         // date: toIsoString(new Date()),
         date: new Date(),
@@ -297,11 +321,13 @@ const FormDailyReport = (props) => {
                                         ? true
                                         : false || props.role === 'ct reviewer'
                                 }
-                                onBlur={() =>
-                                    props.handleonblur
-                                        ? props.handleonblur({ referenceNumber })
-                                        : null
-                                }
+                                // onBlur={() => {
+                                //     console.log('hello');
+                                //     return props.handleonblur
+                                //         ? props.handleonblur({ referenceNumber })
+                                //         : null;
+                                // }}
+                                onBlur={() => handleBlurReferenceNumber(referenceNumber)}
                             />
                         </p>
                         <button
@@ -362,10 +388,13 @@ const FormDailyReport = (props) => {
                                             ? true
                                             : false || props.role === 'ct reviewer'
                                     }
+                                    // onBlur={() =>
+                                    //     props.handleonblur
+                                    //         ? props.handleonblur({ referenceNumber2 })
+                                    //         : null
+                                    // }
                                     onBlur={() =>
-                                        props.handleonblur
-                                            ? props.handleonblur({ referenceNumber2 })
-                                            : null
+                                        handleBlurReferenceNumber(referenceNumber2)
                                     }
                                 />
                             </p>

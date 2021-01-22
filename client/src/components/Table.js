@@ -537,7 +537,7 @@ const Table = (props) => {
                                         <div className="control">
                                             <input
                                                 className="input"
-                                                placeholder="Order number"
+                                                placeholder="Reference number"
                                                 value={referenceNumber}
                                                 onChange={(e) => {
                                                     setReferenceNumber(e.target.value);
