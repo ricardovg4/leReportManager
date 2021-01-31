@@ -11,6 +11,7 @@ import { PaginationProvider } from '../../context/PaginationContext';
 import CreateReportRow from 'components/CreateReportRow';
 import TrackingCard from 'components/TrackingCard';
 import SkuStatusCard from 'components/SkuStatusCard';
+import StatisticsCard from 'components/StatisticsCard';
 
 // const RepresentativeReport = () => {
 //     const [user, setUser] = useContext(UserContext);
@@ -98,12 +99,17 @@ const Dashboard = () => {
     const [user, setUser] = useContext(UserContext);
     const [trackingCardRender, setTrackingCardRender] = useState(0);
     const [skuCardRender, setSkuCardRender] = useState(0);
+    const [statisticsCardRender, setStatisticsCardRender] = useState(0);
 
     const toggleTrackingRender = (setRender) => {
         setTrackingCardRender((prev) => !prev);
     };
     const toggleSkuRender = (setRender) => {
         setSkuCardRender((prev) => !prev);
+    };
+
+    const toggleStatisticsRender = (setRender) => {
+        setStatisticsCardRender((prev) => !prev);
     };
 
     return (
@@ -114,6 +120,7 @@ const Dashboard = () => {
                     <Menu
                         toggletrackingrender={toggleTrackingRender}
                         toggleskurender={toggleSkuRender}
+                        togglestatisticsrender={toggleStatisticsRender}
                     />
                 </div>
                 {/* hard coded widths! */}
@@ -127,8 +134,17 @@ const Dashboard = () => {
                         {skuCardRender ? (
                             <SkuStatusCard togglerender={toggleSkuRender} />
                         ) : null}
+
                         {trackingCardRender ? (
                             <TrackingCard togglerender={toggleTrackingRender} />
+                        ) : null}
+                        {statisticsCardRender ? (
+                            <StatisticsCard
+                                user={user.username}
+                                role={user.role}
+                                userPermissions={user.reportPermissions}
+                                togglerender={toggleStatisticsRender}
+                            />
                         ) : null}
                         {/* conditional render based on menu's links */}
                         <RowsDataUpdateProvider>

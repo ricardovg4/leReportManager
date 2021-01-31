@@ -81,6 +81,14 @@ const Menu = (props) => {
                             SKU status
                         </a>
                     </li>
+                    <li>
+                        <a
+                            className="has-text-white"
+                            onClick={props.togglestatisticsrender}
+                        >
+                            Statistics
+                        </a>
+                    </li>
                 </ul>
                 <p className="menu-label">Docs</p>
                 <ul className="menu-list">

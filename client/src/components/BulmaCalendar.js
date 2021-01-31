@@ -42,31 +42,41 @@ const BulmaCalendar = (props) => {
                 setDate({ startDate, endDate });
             });
         });
-        const clearButton = document.getElementsByClassName(
-            'datetimepicker-clear-button'
+        const clearButton = Array.from(
+            document.getElementsByClassName('datetimepicker-clear-button')
         );
-        clearButton[0].addEventListener('click', () => {
-            setDate({ startDate: null, endDate: null });
-            props.setdatefilters(null, null);
+        clearButton.forEach((ele) => {
+            ele.addEventListener('click', () => {
+                setDate({ startDate: null, endDate: null });
+                props.setdatefilters(null, null);
+            });
         });
         // change color of today's button
-        let today = document.getElementsByClassName('datetimepicker-footer')[0]
-            .children[1];
-        today.classList.remove('has-text-warning');
-        today.classList.add('has-text-info');
+        let today = Array.from(
+            document.getElementsByClassName('datetimepicker-footer-today')
+        );
+        today.forEach((ele) => {
+            ele.classList.remove('has-text-warning');
+            ele.classList.add('has-text-info');
+        });
         // clear button on footer
-        let clear = document.getElementsByClassName('datetimepicker-footer')[0]
-            .children[2];
-        clear.addEventListener('click', (e) => {
-            setDate({ startDate: null, endDate: null });
-            props.setdatefilters(null, null);
+        let clear = Array.from(
+            document.getElementsByClassName('datetimepicker-footer-clear')
+        );
+        clear.forEach((ele) => {
+            ele.addEventListener('click', (e) => {
+                setDate({ startDate: null, endDate: null });
+                props.setdatefilters(null, null);
+            });
         });
 
         // Add border radius to bulma calendar input
-        const inputWrapper = document.getElementsByClassName(
-            'datetimepicker-dummy-wrapper'
-        )[0];
-        inputWrapper.style.borderRadius = '4px';
+        const inputWrapper = Array.from(
+            document.getElementsByClassName('datetimepicker-dummy-wrapper')
+        );
+        inputWrapper.forEach((ele) => {
+            ele.style.borderRadius = '4px';
+        });
     };
 
     useEffect(() => {

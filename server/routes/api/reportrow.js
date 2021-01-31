@@ -27,51 +27,97 @@ router.get('/:username', (req, res) => {
         country,
         follower,
         startDate,
-        endDate
+        endDate,
+        count
     } = req.query;
-    const referenceArray = [];
-    if (systemReferenceNumber) {
-        referenceArray.push(systemReferenceNumber);
+
+    // if count, just aggregate to count documents
+    if (count) {
+        Reportrow.aggregate(
+            [
+                {
+                    $match: {
+                        date: {
+                            $gte: new Date(startDate),
+                            $lte: new Date(endDate)
+                        }
+                    }
+                },
+                {
+                    $group: {
+                        _id: {
+                            year: { $year: '$date' },
+                            month: { $month: '$date' },
+                            day: { $dayOfMonth: '$date' }
+                        },
+                        count: { $sum: 1 },
+                        date: { $first: '$date' }
+                    }
+                },
+                {
+                    $project: {
+                        // dateform: {
+                        //     $dateToString: { format: '%Y-%m-%d', date: '$date' }
+                        // },
+                        date: { $toDate: '$date' },
+                        count: 1,
+                        _id: 0
+                    }
+                }
+            ],
+            function (err, result) {
+                if (err) {
+                    return res.status(400).json({ msg: err });
+                }
+                return res.status(200).json([{ username, result }]);
+            }
+        );
     }
-    if (systemReferenceNumber2) {
-        referenceArray.push(systemReferenceNumber2);
+    if (!count) {
+        const referenceArray = [];
+        if (systemReferenceNumber) {
+            referenceArray.push(systemReferenceNumber);
+        }
+        if (systemReferenceNumber2) {
+            referenceArray.push(systemReferenceNumber2);
+        }
+        // console.log(referenceArray);
+        const query = {
+            // ...(systemReferenceNumber
+            //     ? { 'systemReferenceNumber.number': systemReferenceNumber }
+            //     : null),
+            // ...(systemReferenceOrigin
+            //     ? { 'systemReferenceNumber.origin': systemReferenceOrigin }
+            //     : null),
+            // ...(systemReferenceNumber2
+            //     ? { 'systemReferenceNumber.number': systemReferenceNumber2 }
+            //     : null),
+            // ...(systemReferenceOrigin2
+            //     ? { 'systemReferenceNumber.origin': systemReferenceOrigin2 }
+            //     : null),
+            ...(referenceArray.length > 0
+                ? { 'systemReferenceNumber.number': { $in: referenceArray } }
+                : null),
+            ...(customerEmail ? { customerEmail } : null),
+            ...(customerPhone ? { customerPhone } : null),
+            ...(caseStatus ? { caseStatus } : null),
+            ...(country ? { country } : null),
+            ...(follower ? { follower } : null),
+            ...(startDate && endDate
+                ? { date: { $gte: new Date(startDate), $lte: new Date(endDate) } }
+                : null)
+        };
+        console.log(query);
+        Reportrow.find({ ...query })
+            // exclude fields form response
+            .select('-createdAt -updatedAt -__v')
+            .then((row) => {
+                return res.status(200).json(row);
+            })
+            .catch((e) => {
+                return res.status(400).json({ msg: e });
+            });
     }
-    // console.log(referenceArray);
-    const query = {
-        // ...(systemReferenceNumber
-        //     ? { 'systemReferenceNumber.number': systemReferenceNumber }
-        //     : null),
-        // ...(systemReferenceOrigin
-        //     ? { 'systemReferenceNumber.origin': systemReferenceOrigin }
-        //     : null),
-        // ...(systemReferenceNumber2
-        //     ? { 'systemReferenceNumber.number': systemReferenceNumber2 }
-        //     : null),
-        // ...(systemReferenceOrigin2
-        //     ? { 'systemReferenceNumber.origin': systemReferenceOrigin2 }
-        //     : null),
-        ...(referenceArray.length > 0
-            ? { 'systemReferenceNumber.number': { $in: referenceArray } }
-            : null),
-        ...(customerEmail ? { customerEmail } : null),
-        ...(customerPhone ? { customerPhone } : null),
-        ...(caseStatus ? { caseStatus } : null),
-        ...(country ? { country } : null),
-        ...(follower ? { follower } : null),
-        ...(startDate && endDate
-            ? { date: { $gte: new Date(startDate), $lte: new Date(endDate) } }
-            : null)
-    };
-    // console.log(query);
-    Reportrow.find({ ...query })
-        // exclude fields form response
-        .select('-createdAt -updatedAt -__v')
-        .then((row) => {
-            return res.status(200).json(row);
-        })
-        .catch((e) => {
-            return res.status(400).json({ msg: e });
-        });
 });
 
 // create one, post

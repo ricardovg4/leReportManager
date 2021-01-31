@@ -37,6 +37,9 @@ async function getReportRows(username, filters) {
             query += `startDate=${filters.date.startDate}&`;
             query += `endDate=${filters.date.endDate}&`;
         }
+        if (filters.count) {
+            query += `count=${filters.count}&`;
+        }
     }
     // console.log(`${baseUrl}/api/reportrow/${username}?${query}`);
     try {
