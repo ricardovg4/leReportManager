@@ -40,10 +40,10 @@ const StatisticsCard = (props) => {
 
     const getData = async () => {
         const response = await getReportRows(currentUserReport, query);
-        // console.log(response);
+        console.log(response);
 
         if (response[0].result.length > 0) {
-            console.log('res');
+            // console.log('res');
             const sortedData = response[0].result.sort(function (a, b) {
                 return a.date > b.date ? 1 : a.date < b.date ? -1 : 0;
             });
