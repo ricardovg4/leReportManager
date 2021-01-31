@@ -39,12 +39,12 @@ const StatisticsCard = (props) => {
     };
 
     const getData = async () => {
-        const response = await getReportRows(currentUserReport, query);
-        console.log(response);
+        const resultData = await getReportRows(currentUserReport, query);
+        console.log(resultData);
 
-        if (response[0].result.length > 0) {
+        if (resultData[0].result.length > 0) {
             // console.log('res');
-            const sortedData = response[0].result.sort(function (a, b) {
+            const sortedData = resultData[0].result.sort(function (a, b) {
                 return a.date > b.date ? 1 : a.date < b.date ? -1 : 0;
             });
             const returnedData = sortedData.map((ele) => {
@@ -55,7 +55,7 @@ const StatisticsCard = (props) => {
             });
             setData([
                 {
-                    id: response[0].username,
+                    id: resultData[0].username,
                     color: 'hsl(290, 70%, 50%)',
                     data: returnedData
                 }
@@ -63,7 +63,7 @@ const StatisticsCard = (props) => {
         } else {
             setData([
                 {
-                    id: response[0].username,
+                    id: resultData[0].username,
                     color: 'hsl(290, 70%, 50%)',
                     data: [{ x: 0, y: 0 }]
                 }
