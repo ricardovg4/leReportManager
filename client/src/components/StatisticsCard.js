@@ -42,7 +42,7 @@ const StatisticsCard = (props) => {
         const resultData = await getReportRows(currentUserReport, query);
         console.log(resultData);
 
-        if (resultData[0].result.length > 0) {
+        if (resultData && resultData[0].result.length > 0) {
             // console.log('res');
             const sortedData = resultData[0].result.sort(function (a, b) {
                 return a.date > b.date ? 1 : a.date < b.date ? -1 : 0;
