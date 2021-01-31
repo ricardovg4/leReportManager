@@ -150,8 +150,13 @@ const FormDailyReport = (props) => {
         return false;
     };
 
-    const handleBlurReferenceNumber = (referenceNumberState) => {
+    const handleBlurReferenceNumber = (referenceNumberState, number) => {
         checkWhichCountry(referenceNumberState, countries);
+        if (number === 2) {
+            return props.handleonblur
+                ? props.handleonblur({ referenceNumber2: referenceNumberState })
+                : null;
+        }
         return props.handleonblur
             ? props.handleonblur({ referenceNumber: referenceNumberState })
             : null;
@@ -394,7 +399,7 @@ const FormDailyReport = (props) => {
                                     //         : null
                                     // }
                                     onBlur={() =>
-                                        handleBlurReferenceNumber(referenceNumber2)
+                                        handleBlurReferenceNumber(referenceNumber2, 2)
                                     }
                                 />
                             </p>
