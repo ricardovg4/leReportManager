@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import getReportRows from '../apiCalls/reportRows/getReportRows';
 import BulmaCalendar from '../components/BulmaCalendar';
 import NivoLine from '../components/NivoLine';
+import Loading from '../pages/Loading/Loading';
 import { useEffect, useState } from 'react';
 
 const { FontAwesomeIcon } = require('@fortawesome/react-fontawesome');
@@ -12,6 +13,7 @@ const StatisticsCard = (props) => {
     );
     const [data, setData] = useState(null);
     const [timezone, setTimezone] = useState(null);
+    const [loading, setLoading] = useState(false);
     const today = dayjs();
     const lastDays = today.subtract(7, 'day');
     const resetQuery = {
@@ -39,7 +41,10 @@ const StatisticsCard = (props) => {
     };
 
     const getData = async () => {
+        setLoading(true);
         const resultData = await getReportRows(currentUserReport, query);
+        setLoading(false);
+
         console.log(resultData);
 
         if (resultData && resultData[0].result.length > 0) {
@@ -138,7 +143,11 @@ const StatisticsCard = (props) => {
                         </div>
                     ) : null}
 
-                    {!data ? null : (
+                    {loading ? (
+                        <div style={{ height: '500px' }}>
+                            <Loading fullheight={false} />
+                        </div>
+                    ) : !data ? null : (
                         <div style={{ height: '500px' }}>
                             <NivoLine
                                 data={data}
