@@ -303,7 +303,7 @@ const Table = (props) => {
 
     // use filters
     useEffect(() => {
-        updateRows(filters);
+        updateRows(filters, true, true);
     }, [filters]);
 
     useEffect(() => {
