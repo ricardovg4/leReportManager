@@ -14,8 +14,8 @@ const StatisticsCard = (props) => {
     const [data, setData] = useState(null);
     const [timezone, setTimezone] = useState(null);
     const [loading, setLoading] = useState(false);
-    const today = dayjs();
-    const lastDays = today.subtract(7, 'day');
+    const today = dayjs().endOf('day');
+    const lastDays = dayjs(today.subtract(7, 'day')).startOf('day');
     const resetQuery = {
         date: {
             startDate: lastDays,
