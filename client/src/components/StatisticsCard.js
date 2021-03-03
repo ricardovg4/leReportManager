@@ -100,9 +100,9 @@ const StatisticsCard = (props) => {
                     </a>
                 </header>
                 <div className="card-content">
-                    {props.role === 'ct reviewer' ? (
-                        <div className="level mb-0">
-                            <div className="level-left">
+                    <div className="level mb-0">
+                        <div className="level-left">
+                            {props.role === 'ct reviewer' ? (
                                 <div className="level-item">
                                     <p className="has-text-weight-semibold mr-2">
                                         CS Representative
@@ -133,15 +133,15 @@ const StatisticsCard = (props) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="level-item">
-                                    <BulmaCalendar
-                                        setdatefilters={setDateFilters}
-                                        handletimezone={handleTimezone}
-                                    />
-                                </div>
+                            ) : null}
+                            <div className="level-item">
+                                <BulmaCalendar
+                                    setdatefilters={setDateFilters}
+                                    handletimezone={handleTimezone}
+                                />
                             </div>
                         </div>
-                    ) : null}
+                    </div>
 
                     {loading ? (
                         <div style={{ height: '500px' }}>
