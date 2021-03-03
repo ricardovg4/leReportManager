@@ -43,6 +43,7 @@ router.get('/:username', (req, res) => {
                         }
                     }
                 },
+                { $sort: { date: -1 } },
                 {
                     $group: {
                         _id: {
