@@ -137,7 +137,7 @@ const FormDailyReport = (props) => {
     us: ['111', '112', '113', '114', 'GW', '1000'],
     uk: ['026', '202', '203', '204', '205', '206', 'UK'],
     de: ['028', '302', '303', '304', '305', '306', 'DE'],
-    ca: ['701', '702']
+    ca: ['701', '702', 'CA']
   };
 
   const checkWhichCountry = (string, countries) => {
