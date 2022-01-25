@@ -12,6 +12,7 @@ import CreateReportRow from 'components/CreateReportRow';
 import TrackingCard from 'components/TrackingCard';
 import SkuStatusCard from 'components/SkuStatusCard';
 import StatisticsCard from 'components/StatisticsCard';
+import ReportStatsCard from 'components/ReportStatsCard';
 
 // const RepresentativeReport = () => {
 //     const [user, setUser] = useContext(UserContext);
@@ -96,74 +97,83 @@ import StatisticsCard from 'components/StatisticsCard';
 // };
 
 const Dashboard = () => {
-    const [user, setUser] = useContext(UserContext);
-    const [trackingCardRender, setTrackingCardRender] = useState(0);
-    const [skuCardRender, setSkuCardRender] = useState(0);
-    const [statisticsCardRender, setStatisticsCardRender] = useState(0);
+  const [user, setUser] = useContext(UserContext);
+  const [trackingCardRender, setTrackingCardRender] = useState(0);
+  const [skuCardRender, setSkuCardRender] = useState(0);
+  const [statisticsCardRender, setStatisticsCardRender] = useState(0);
+  const [reportStatsCardRender, setReportStatsCardRender] = useState(0);
 
-    const toggleTrackingRender = (setRender) => {
-        setTrackingCardRender((prev) => !prev);
-    };
-    const toggleSkuRender = (setRender) => {
-        setSkuCardRender((prev) => !prev);
-    };
+  const toggleTrackingRender = (setRender) => {
+    setTrackingCardRender((prev) => !prev);
+  };
+  const toggleSkuRender = (setRender) => {
+    setSkuCardRender((prev) => !prev);
+  };
 
-    const toggleStatisticsRender = (setRender) => {
-        setStatisticsCardRender((prev) => !prev);
-    };
+  const toggleStatisticsRender = (setRender) => {
+    setStatisticsCardRender((prev) => !prev);
+  };
 
-    return (
-        <div>
-            <div className="columns is-mobile ">
-                {/* hard coded widths! */}
-                <div className="column is-1 p-0" style={{ width: '170px' }}>
-                    <Menu
-                        toggletrackingrender={toggleTrackingRender}
-                        toggleskurender={toggleSkuRender}
-                        togglestatisticsrender={toggleStatisticsRender}
-                    />
-                </div>
-                {/* hard coded widths! */}
-                <div
-                    className="column pl-0 pb-0"
-                    style={{ width: 'calc(100vw - 170px)' }}
-                >
-                    <div>
-                        <Navbar />
-                        {/* conditional render based on menu's links */}
-                        {skuCardRender ? (
-                            <SkuStatusCard togglerender={toggleSkuRender} />
-                        ) : null}
+  const toggleReportStatsRender = (setRender) => {
+    setReportStatsCardRender((prev) => !prev);
+  };
 
-                        {trackingCardRender ? (
-                            <TrackingCard togglerender={toggleTrackingRender} />
-                        ) : null}
-                        {statisticsCardRender ? (
-                            <StatisticsCard
-                                user={user.username}
-                                role={user.role}
-                                userPermissions={user.reportPermissions}
-                                togglerender={toggleStatisticsRender}
-                            />
-                        ) : null}
-                        {/* conditional render based on menu's links */}
-                        <RowsDataUpdateProvider>
-                            {/* <CreateReportRow user={user.username} /> */}
-                            {user.role === 'cs representative' ? (
-                                <CreateReportRow user={user.username} />
-                            ) : null}
-                            <PaginationProvider>
-                                <DailyReport
-                                    user={user.username}
-                                    role={user.role}
-                                    userPermissions={user.reportPermissions}
-                                />
-                            </PaginationProvider>
-                        </RowsDataUpdateProvider>
-                    </div>
-                </div>
-            </div>
+  return (
+    <div>
+      <div className="columns is-mobile ">
+        {/* hard coded widths! */}
+        <div className="column is-1 p-0" style={{ width: '170px' }}>
+          <Menu
+            toggletrackingrender={toggleTrackingRender}
+            toggleskurender={toggleSkuRender}
+            togglestatisticsrender={toggleStatisticsRender}
+            togglereportstatsrender={toggleReportStatsRender}
+          />
         </div>
-    );
+        {/* hard coded widths! */}
+        <div className="column pl-0 pb-0" style={{ width: 'calc(100vw - 170px)' }}>
+          <div>
+            <Navbar />
+            {/* conditional render based on menu's links */}
+            {skuCardRender ? <SkuStatusCard togglerender={toggleSkuRender} /> : null}
+
+            {trackingCardRender ? (
+              <TrackingCard togglerender={toggleTrackingRender} />
+            ) : null}
+            {statisticsCardRender ? (
+              <StatisticsCard
+                user={user.username}
+                role={user.role}
+                userPermissions={user.reportPermissions}
+                togglerender={toggleStatisticsRender}
+              />
+            ) : null}
+            {reportStatsCardRender ? (
+              <ReportStatsCard
+                user={user.username}
+                role={user.role}
+                userPermissions={user.reportPermissions}
+                togglerender={toggleReportStatsRender}
+              />
+            ) : null}
+            {/* conditional render based on menu's links */}
+            <RowsDataUpdateProvider>
+              {/* <CreateReportRow user={user.username} /> */}
+              {user.role === 'cs representative' ? (
+                <CreateReportRow user={user.username} />
+              ) : null}
+              <PaginationProvider>
+                <DailyReport
+                  user={user.username}
+                  role={user.role}
+                  userPermissions={user.reportPermissions}
+                />
+              </PaginationProvider>
+            </RowsDataUpdateProvider>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 export default Dashboard;
