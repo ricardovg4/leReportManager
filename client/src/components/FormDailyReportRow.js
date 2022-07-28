@@ -568,7 +568,7 @@ const FormDailyReport = (props) => {
                     <option value="Candy">Candy</option>
                     <option value="Bella">Bella</option>
                     <option value="Carina">Carina</option>
-                    {/* <option value="Steven">Steven</option> */}
+                    <option value="Lucinda">Lucinda</option>
                     <option value="Ricardo">Ricardo</option>
                     <option value="Kevin">Kevin</option>
                     <option value="Monica">Monica</option>
